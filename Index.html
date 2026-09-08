@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131a">
+<title>KYMERA — Elemental RPG</title>
+
+<style>
+:root{
+  --bg:#0b0e14;
+  --panel:#131824;
+  --panel2:#1a2030;
+  --text:#edf1f7;
+  --muted:#9ca8ba;
+  --accent:#79d8ff;
+  --accent2:#b78cff;
+  --danger:#ff6f7d;
+  --success:#72e0a4;
+  --border:#2a3345;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#182235 0,#0b0e14 55%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+header{
+  padding:22px 18px;
+  border-bottom:1px solid var(--border);
+  background:rgba(11,14,20,.9);
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(10px);
+}
+
+.logo{
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:5px;
+}
+
+.subtitle{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:4px;
+}
+
+nav{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin-top:16px;
+  padding-bottom:2px;
+}
+
+nav button{
+  flex:0 0 auto;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--muted);
+  border-radius:9px;
+  padding:9px 13px;
+  cursor:pointer;
+}
+
+nav button.active{
+  color:var(--text);
+  border-color:var(--accent);
+  background:var(--panel2);
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+h1,h2,h3{
+  margin-top:0;
+}
+
+h1{
+  font-size:30px;
+}
+
+h2{
+  border-bottom:1px solid var(--border);
+  padding-bottom:9px;
+}
+
+.card{
+  background:linear-gradient(145deg,var(--panel),#10151f);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 8px 30px rgba(0,0,0,.2);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+}
+
+button{
+  border:0;
+  background:var(--accent);
+  color:#071018;
+  font-weight:700;
+  border-radius:9px;
+  padding:10px 14px;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+button.danger{
+  background:var(--danger);
+}
+
+input,select,textarea{
+  width:100%;
+  margin-top:6px;
+  background:#0b0f17;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px;
+}
+
+label{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.stat{
+  display:flex;
+  justify-content:space-between;
+  padding:9px 0;
+  border-bottom:1px solid #222a38;
+}
+
+.stat:last-child{
+  border-bottom:0;
+}
+
+.big{
+  font-size:42px;
+  font-weight:900;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  margin:3px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.element{
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px;
+  cursor:pointer;
+}
+
+.element:hover{
+  border-color:var(--accent);
+}
+
+.element strong{
+  font-size:20px;
+}
+
+.roll{
+  text-align:center;
+  padding:20px;
+}
+
+.rollResult{
+  font-size:54px;
+  font-weight:900;
+  margin:10px;
+}
+
+.log{
+  max-height:260px;
+  overflow:auto;
+  background:#080b10;
+  border:1px solid var(--border);
+  padding:12px;
+  border-radius:8px;
+  font-family:monospace;
+  font-size:13px;
+}
+
+.hexmap{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:4px;
+  overflow:auto;
+}
+
+.hex{
+  min-width:45px;
+  height:50px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:11px;
+  cursor:pointer;
+  clip-path:polygon(
+    25% 0%,75% 0%,100% 50%,
+    75% 100%,25% 100%,0% 50%
+  );
+}
+
+.hex:hover{
+  background:#273247;
+}
+
+.notice{
+  padding:12px;
+  border-left:3px solid var(--accent);
+  background:rgba(121,216,255,.05);
+  color:var(--muted);
+  margin:12px 0;
+}
+
+footer{
+  text-align:center;
+  color:var(--muted);
+  padding:30px;
+  font-size:12px;
+}
+
+@media(max-width:650px){
+  main{padding:12px}
+  .grid{grid-template-columns:1fr}
+  .hexmap{grid-template-columns:repeat(6,45px)}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">KYMERA</div>
+  <div class="subtitle">AN ELEMENTAL RPG OF BODY • MIND • SOUL</div>
+
+  <nav>
+    <button onclick="showPage('home')" class="active">Home</button>
+    <button onclick="showPage('character')">Character</button>
+    <button onclick="showPage('elements')">Elements</button>
+    <button onclick="showPage('forge')">Ability Forge</button>
+    <button onclick="showPage('combat')">Combat</button>
+    <button onclick="showPage('gm')">GM Tools</button>
+    <button onclick="showPage('learn')">Learn</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+<div class="card">
+<h1>KYMERA</h1>
+
+<p>
+KYMERA is a tactical elemental tabletop RPG built around three fundamental
+aspects of existence:
+</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>BODY</h3>
+<p>Physical capability, endurance and instinct.</p>
+</div>
+
+<div class="card">
+<h3>MIND</h3>
+<p>Knowledge, perception, calculation and manipulation.</p>
+</div>
+
+<div class="card">
+<h3>SOUL</h3>
+<p>Identity, willpower, life, death and the impossible.</p>
+</div>
+
+</div>
+
+<div class="notice">
+Every character is connected to three elemental expressions.
+The element is not merely a spell list — it influences what your
+character can become.
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h2>Quick Roll</h2>
+
+<select id="quickStat">
+<option>Might</option>
+<option>Agility</option>
+<option>Intellect</option>
+<option>Perception</option>
+<option>Presence</option>
+<option>Resonance</option>
+</select>
+
+<br><br>
+
+<button onclick="quickRoll()">Roll d20</button>
+
+<div id="quickResult" class="rollResult">—</div>
+
+<div id="quickText"></div>
+</div>
+
+<div class="card">
+<h2>Game Resources</h2>
+
+<div class="stat">
+<span>Body Reservoir</span>
+<strong id="homeBody">5</strong>
+</div>
+
+<div class="stat">
+<span>Mind Reservoir</span>
+<strong id="homeMind">5</strong>
+</div>
+
+<div class="stat">
+<span>Soul Reservoir</span>
+<strong id="homeSoul">5</strong>
+</div>
+
+<div class="stat">
+<span>Hope</span>
+<strong id="homeHope">2</strong>
+</div>
+
+<div class="stat">
+<span>Overload</span>
+<strong id="homeOverload">0</strong>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CHARACTER -->
+
+<section id="character" class="page">
+
+<h1>Character Sheet</h1>
+
+<div class="card">
+
+<label>
+Character Name
+<input id="charName" placeholder="Enter character name">
+</label>
+
+<label>
+Concept
+<input id="charConcept" placeholder="What are you?">
+</label>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h2>Body</h2>
+
+<label>
+Element
+<select id="bodyElement"></select>
+</label>
+
+<div class="stat">
+<span>Reservoir</span>
+<strong id="bodyValue">5</strong>
+</div>
+
+<button onclick="spend('body')">Spend Body</button>
+<button class="secondary" onclick="restore('body')">Restore</button>
+
+</div>
+
+<div class="card">
+<h2>Mind</h2>
+
+<label>
+Element
+<select id="mindElement"></select>
+</label>
+
+<div class="stat">
+<span>Reservoir</span>
+<strong id="mindValue">5</strong>
+</div>
+
+<button onclick="spend('mind')">Spend Mind</button>
+<button class="secondary" onclick="restore('mind')">Restore</button>
+
+</div>
+
+<div class="card">
+<h2>Soul</h2>
+
+<label>
+Element
+<select id="soulElement"></select>
+</label>
+
+<div class="stat">
+<span>Reservoir</span>
+<strong id="soulValue">5</strong>
+</div>
+
+<button onclick="spend('soul')">Spend Soul</button>
+<button class="secondary" onclick="restore('soul')">Restore</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Stats</h2>
+
+<div id="stats"></div>
+
+<p>
+Starting spread:
+<strong>+2, +1, +1, 0, 0, -1</strong>
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Character Resources</h2>
+
+<div class="grid">
+
+<div>
+<h3>Hope</h3>
+<div class="big" id="hope">2</div>
+<button onclick="changeHope(1)">+ Hope</button>
+<button class="secondary" onclick="changeHope(-1)">− Hope</button>
+</div>
+
+<div>
+<h3>Overload</h3>
+<div class="big" id="overload">0</div>
+<button onclick="changeOverload(1)">+ Overload</button>
+<button class="secondary" onclick="changeOverload(-1)">− Overload</button>
+</div>
+
+</div>
+
+</div>
+
+<button onclick="saveCharacter()">Save Character</button>
+<button class="secondary" onclick="loadCharacter()">Load Character</button>
+
+</section>
+
+
+<!-- ELEMENTS -->
+
+<section id="elements" class="page">
+
+<h1>Element Archive</h1>
+
+<div class="card">
+
+<p>
+KYMERA uses the periodic table as the foundation for its elemental system.
+Elements inherit mechanical characteristics from their position,
+category and state while retaining individual identities.
+</p>
+
+<input id="elementSearch"
+placeholder="Search elements..."
+oninput="renderElements()">
+
+</div>
+
+<div id="elementGrid" class="grid"></div>
+
+</section>
+
+
+<!-- FORGE -->
+
+<section id="forge" class="page">
+
+<h1>Ability Forge</h1>
+
+<div class="card">
+
+<p>
+Build a KYMERA ability by combining an element with an expression,
+attack profile and effect.
+</p>
+
+<label>
+Name
+<input id="abilityName" placeholder="e.g. Magnetic Dominion">
+</label>
+
+<label>
+Primary Element
+<select id="forgeElement"></select>
+</label>
+
+<label>
+Expression
+<select id="forgeExpression">
+<option>Body</option>
+<option>Mind</option>
+<option>Soul</option>
+</select>
+</label>
+
+<label>
+Range
+<select id="forgeRange">
+<option>Self</option>
+<option>Engaged</option>
+<option>Near</option>
+<option>Far</option>
+<option>Extreme</option>
+</select>
+</label>
+
+<label>
+Area
+<select id="forgeArea">
+<option>Single Target</option>
+<option>Small Area</option>
+<option>Large Area</option>
+<option>Line</option>
+<option>Zone</option>
+</select>
+</label>
+
+<label>
+Damage Type
+<select id="forgeDamage">
+<option>Physical — Slash</option>
+<option>Physical — Pierce</option>
+<option>Physical — Crush</option>
+<option>Energetic — Heat</option>
+<option>Energetic — Cold</option>
+<option>Energetic — Electric</option>
+<option>Energetic — Chemical</option>
+<option>Energetic — Radiation</option>
+<option>Mental — Psychic</option>
+<option>Mental — Fear</option>
+<option>Soul — Life</option>
+<option>Soul — Death</option>
+<option>Soul — Spatial</option>
+<option>Soul — Temporal</option>
+</select>
+</label>
+
+<label>
+Effect
+<textarea id="forgeEffect"
+placeholder="Describe what happens..."></textarea>
+</label>
+
+<button onclick="forgeAbility()">Forge Ability</button>
+
+</div>
+
+<div class="card">
+
+<h2>Forged Ability</h2>
+
+<div id="forgedAbility">
+Nothing forged yet.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- COMBAT -->
+
+<section id="combat" class="page">
+
+<h1>Tactical Combat</h1>
+
+<div class="card">
+
+<h2>Turn Structure</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Move</h3>
+<p>Move across the battlefield.</p>
+</div>
+
+<div class="card">
+<h3>Action 1</h3>
+<p>Attack, Power, Guard, Dash, Interact, Prepare or Synthesize.</p>
+</div>
+
+<div class="card">
+<h3>Action 2</h3>
+<p>A second action from the available options.</p>
+</div>
+
+<div class="card">
+<h3>Reaction</h3>
+<p>Respond to an enemy or battlefield event.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Battlefield</h2>
+
+<div class="hexmap" id="hexmap"></div>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<h2>Defences</h2>
+
+<div class="stat">
+<span>Evasion</span>
+<strong>10</strong>
+</div>
+
+<div class="stat">
+<span>Resistance</span>
+<strong>10</strong>
+</div>
+
+<div class="stat">
+<span>Will</span>
+<strong>10</strong>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Combat Log</h2>
+
+<div class="log" id="combatLog">
+KYMERA combat system ready.
+</div>
+
+<br>
+
+<button onclick="combatLog('Battlefield event triggered.')">
+Trigger Event
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- GM -->
+
+<section id="gm" class="page">
+
+<h1>GM Tools</h1>
+
+<div class="card">
+
+<h2>Enemy Forge</h2>
+
+<label>
+Enemy Name
+<input id="enemyName" placeholder="Enemy">
+</label>
+
+<label>
+Role
+<select id="enemyRole">
+<option>Brute</option>
+<option>Striker</option>
+<option>Controller</option>
+<option>Skirmisher</option>
+<option>Defender</option>
+<option>Support</option>
+<option>Boss</option>
+</select>
+</label>
+
+<label>
+Vitality
+<select id="enemyVitality">
+<option>Fragile</option>
+<option>Standard</option>
+<option>Durable</option>
+<option>Elite</option>
+<option>Boss</option>
+</select>
+</label>
+
+<button onclick="forgeEnemy()">Create Enemy</button>
+
+</div>
+
+<div class="card">
+
+<h2>Encounter Generator</h2>
+
+<button onclick="generateEncounter()">Generate Encounter</button>
+
+<div id="encounterResult" class="notice">
+No encounter generated.
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Campaign Builder</h2>
+
+<label>
+Campaign Name
+<input id="campaignName" placeholder="Campaign">
+</label>
+
+<label>
+Central Threat
+<input id="campaignThreat" placeholder="What threatens the world?">
+</label>
+
+<button onclick="generateCampaign()">Generate Campaign Seed</button>
+
+<div id="campaignResult"></div>
+
+</div>
+
+</section>
+
+
+<!-- LEARN -->
+
+<section id="learn" class="page">
+
+<h1>Learn KYMERA</h1>
+
+<div class="card">
+
+<h2>The Core Roll</h2>
+
+<p>
+Roll:
+</p>
+
+<div class="notice">
+<strong>d20 + Stat + Resonance Trait</strong>
+</div>
+
+<p>
+Compare the result to the difficulty.
+</p>
+
+<div class="stat">
+<span>Easy</span>
+<strong>10</strong>
+</div>
+
+<div class="stat">
+<span>Standard</span>
+<strong>13</strong>
+</div>
+
+<div class="stat">
+<span>Hard</span>
+<strong>16</strong>
+</div>
+
+<div class="stat">
+<span>Extreme</span>
+<strong>19</strong>
+</div>
+
+<div class="stat">
+<span>Legendary</span>
+<strong>22</strong>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Advantage & Disadvantage</h2>
+
+<p>
+With advantage, roll two d20s and keep the higher result.
+With disadvantage, roll two and keep the lower.
+</p>
+
+<p>
+Additional edges can provide up to +3.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Critical Results</h2>
+
+<p>
+<strong>Natural 20:</strong> Extra effect.</p>
+
+<p>
+<strong>Natural 1:</strong> Complication or resource loss.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Reservoir & Overload</h2>
+
+<p>
+Characters have Body, Mind and Soul reservoirs.
+Using power beyond safe capacity creates Overload.
+</p>
+
+<p>
+At 5 Overload, the track Breaks and resets to 2,
+with a lasting GM consequence.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Rest</h2>
+
+<p>
+<strong>Short Rest:</strong> Restore 2 Reservoir and clear 2 Overload.
+</p>
+
+<p>
+<strong>Full Rest:</strong> Restore all Reservoir and clear Overload.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+KYMERA — An Elemental RPG of Body, Mind & Soul
+</footer>
+
+
+<script>
+
+/* =========================================================
+   KYMERA CORE DATA
+========================================================= */
+
+const elements = [
+["H","Hydrogen","Nonmetal","Gas"],
+["He","Helium","Noble Gas","Gas"],
+["Li","Lithium","Alkali Metal","Solid"],
+["Be","Beryllium","Alkaline Earth","Solid"],
+["B","Boron","Metalloid","Solid"],
+["C","Carbon","Nonmetal","Solid"],
+["N","Nitrogen","Nonmetal","Gas"],
+["O","Oxygen","Nonmetal","Gas"],
+["F","Fluorine","Halogen","Gas"],
+["Ne","Neon","Noble Gas","Gas"],
+["Na","Sodium","Alkali Metal","Solid"],
+["Mg","Magnesium","Alkaline Earth","Solid"],
+["Al","Aluminium","Post-transition Metal","Solid"],
+["Si","Silicon","Metalloid","Solid"],
+["P","Phosphorus","Nonmetal","Solid"],
+["S","Sulfur","Nonmetal","Solid"],
+["Cl","Chlorine","Halogen","Gas"],
+["Ar","Argon","Noble Gas","Gas"],
+["K","Potassium","Alkali Metal","Solid"],
+["Ca","Calcium","Alkaline Earth","Solid"],
+["Sc","Scandium","Transition Metal","Solid"],
+["Ti","Titanium","Transition Metal","Solid"],
+["V","Vanadium","Transition Metal","Solid"],
+["Cr","Chromium","Transition Metal","Solid"],
+["Mn","Manganese","Transition Metal","Solid"],
+["Fe","Iron","Transition Metal","Solid"],
+["Co","Cobalt","Transition Metal","Solid"],
+["Ni","Nickel","Transition Metal","Solid"],
+["Cu","Copper","Transition Metal","Solid"],
+["Zn","Zinc","Transition Metal","Solid"],
+["Ga","Gallium","Post-transition Metal","Solid"],
+["Ge","Germanium","Metalloid","Solid"],
+["As","Arsenic","Metalloid","Solid"],
+["Se","Selenium","Nonmetal","Solid"],
+["Br","Bromine","Halogen","Liquid"],
+["Kr","Krypton","Noble Gas","Gas"],
+["Rb","Rubidium","Alkali Metal","Solid"],
+["Sr","Strontium","Alkaline Earth","Solid"],
+["Y","Yttrium","Transition Metal","Solid"],
+["Zr","Zirconium","Transition Metal","Solid"],
+["Nb","Niobium","Transition Metal","Solid"],
+["Mo","Molybdenum","Transition Metal","Solid"],
+["Tc","Technetium","Transition Metal","Solid"],
+["Ru","Ruthenium","Transition Metal","Solid"],
+["Rh","Rhodium","Transition Metal","Solid"],
+["Pd","Palladium","Transition Metal","Solid"],
+["Ag","Silver","Transition Metal","Solid"],
+["Cd","Cadmium","Transition Metal","Solid"],
+["In","Indium","Post-transition Metal","Solid"],
+["Sn","Tin","Post-transition Metal","Solid"],
+["Sb","Antimony","Metalloid","Solid"],
+["Te","Tellurium","Metalloid","Solid"],
+["I","Iodine","Halogen","Solid"],
+["Xe","Xenon","Noble Gas","Gas"],
+["Cs","Caesium","Alkali Metal","Solid"],
+["Ba","Barium","Alkaline Earth","Solid"],
+["La","Lanthanum","Lanthanide","Solid"],
+["Ce","Cerium","Lanthanide","Solid"],
+["Pr","Praseodymium","Lanthanide","Solid"],
+["Nd","Neodymium","Lanthanide","Solid"],
+["Pm","Promethium","Lanthanide","Solid"],
+["Sm","Samarium","Lanthanide","Solid"],
+["Eu","Europium","Lanthanide","Solid"],
+["Gd","Gadolinium","Lanthanide","Solid"],
+["Tb","Terbium","Lanthanide","Solid"],
+["Dy","Dysprosium","Lanthanide","Solid"],
+["Ho","Holmium","Lanthanide","Solid"],
+["Er","Erbium","Lanthanide","Solid"],
+["Tm","Thulium","Lanthanide","Solid"],
+["Yb","Ytterbium","Lanthanide","Solid"],
+["Lu","Lutetium","Lanthanide","Solid"],
+["Hf","Hafnium","Transition Metal","Solid"],
+["Ta","Tantalum","Transition Metal","Solid"],
+["W","Tungsten","Transition Metal","Solid"],
+["Re","Rhenium","Transition Metal","Solid"],
+["Os","Osmium","Transition Metal","Solid"],
+["Ir","Iridium","Transition Metal","Solid"],
+["Pt","Platinum","Transition Metal","Solid"],
+["Au","Gold","Transition Metal","Solid"],
+["Hg","Mercury","Transition Metal","Liquid"],
+["Tl","Thallium","Post-transition Metal","Solid"],
+["Pb","Lead","Post-transition Metal","Solid"],
+["Bi","Bismuth","Post-transition Metal","Solid"],
+["Po","Polonium","Post-transition Metal","Solid"],
+["At","Astatine","Halogen","Solid"],
+["Rn","Radon","Noble Gas","Gas"],
+["Fr","Francium","Alkali Metal","Solid"],
+["Ra","Radium","Alkaline Earth","Solid"],
+["Ac","Actinium","Actinide","Solid"],
+["Th","Thorium","Actinide","Solid"],
+["Pa","Protactinium","Actinide","Solid"],
+["U","Uranium","Actinide","Solid"],
+["Np","Neptunium","Actinide","Solid"],
+["Pu","Plutonium","Actinide","Solid"],
+["Am","Americium","Actinide","Solid"],
+["Cm","Curium","Actinide","Solid"],
+["Bk","Berkelium","Actinide","Solid"],
+["Cf","Californium","Actinide","Solid"],
+["Es","Einsteinium","Actinide","Solid"],
+["Fm","Fermium","Actinide","Solid"],
+["Md","Mendelevium","Actinide","Solid"],
+["No","Nobelium","Actinide","Solid"],
+["Lr","Lawrencium","Actinide","Solid"],
+["Rf","Rutherfordium","Transition Metal","Solid"],
+["Db","Dubnium","Transition Metal","Solid"],
+["Sg","Seaborgium","Transition Metal","Solid"],
+["Bh","Bohrium","Transition Metal","Solid"],
+["Hs","Hassium","Transition Metal","Solid"],
+["Mt","Meitnerium","Transition Metal","Solid"],
+["Ds","Darmstadtium","Transition Metal","Solid"],
+["Rg","Roentgenium","Transition Metal","Solid"],
+["Cn","Copernicium","Transition Metal","Solid"],
+["Nh","Nihonium","Post-transition Metal","Solid"],
+["Fl","Flerovium","Post-transition Metal","Solid"],
+["Mc","Moscovium","Post-transition Metal","Solid"],
+["Lv","Livermorium","Post-transition Metal","Solid"],
+["Ts","Tennessine","Halogen","Solid"],
+["Og","Oganesson","Noble Gas","Gas"]
+];
+
+const statNames=[
+"Might",
+"Agility",
+"Intellect",
+"Perception",
+"Presence",
+"Resonance"
+];
+
+const stats={
+Might:2,
+Agility:1,
+Intellect:1,
+Perception:0,
+Presence:0,
+Resonance:-1
+};
+
+const game={
+body:5,
+mind:5,
+soul:5,
+hope:2,
+overload:0
+};
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(id){
+
+document.querySelectorAll(".page").forEach(
+p=>p.classList.remove("active")
+);
+
+document.getElementById(id).classList.add("active");
+
+document.querySelectorAll("nav button").forEach(
+b=>b.classList.remove("active")
+);
+
+const buttons=document.querySelectorAll("nav button");
+
+buttons.forEach(b=>{
+if(b.getAttribute("onclick")===`showPage('${id}')`)
+b.classList.add("active");
+});
+
+}
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+function populateElements(){
+
+const selects=[
+"bodyElement",
+"mindElement",
+"soulElement",
+"forgeElement"
+];
+
+selects.forEach(id=>{
+
+const el=document.getElementById(id);
+
+elements.forEach(e=>{
+
+const option=document.createElement("option");
+
+option.value=e[0];
+
+option.textContent=`${e[0]} — ${e[1]}`;
+
+el.appendChild(option);
+
+});
+
+});
+
+}
+
+function renderElements(){
+
+const grid=document.getElementById("elementGrid");
+
+const search=document.getElementById("elementSearch")
+.value.toLowerCase();
+
+grid.innerHTML="";
+
+elements
+.filter(e=>
+e[0].toLowerCase().includes(search) ||
+e[1].toLowerCase().includes(search) ||
+e[2].toLowerCase().includes(search)
+)
+.forEach(e=>{
+
+const div=document.createElement("div");
+
+div.className="element";
+
+div.innerHTML=`
+<strong>${e[0]}</strong>
+<br>
+${e[1]}
+<br><br>
+<span class="badge">${e[2]}</span>
+<span class="badge">${e[3]}</span>
+`;
+
+div.onclick=()=>{
+
+alert(
+`${e[1]} (${e[0]})\n\n`+
+`Category: ${e[2]}\n`+
+`State: ${e[3]}`
+);
+
+};
+
+grid.appendChild(div);
+
+});
+
+}
+
+
+/* =========================================================
+   CHARACTER
+========================================================= */
+
+function renderStats(){
+
+const container=document.getElementById("stats");
+
+container.innerHTML="";
+
+statNames.forEach(name=>{
+
+const div=document.createElement("div");
+
+div.className="stat";
+
+div.innerHTML=`
+<span>${name}</span>
+<strong>${stats[name]>=0?"+":""}${stats[name]}</strong>
+`;
+
+container.appendChild(div);
+
+});
+
+}
+
+function updateResources(){
+
+document.getElementById("bodyValue").textContent=game.body;
+document.getElementById("mindValue").textContent=game.mind;
+document.getElementById("soulValue").textContent=game.soul;
+
+document.getElementById("hope").textContent=game.hope;
+document.getElementById("overload").textContent=game.overload;
+
+document.getElementById("homeBody").textContent=game.body;
+document.getElementById("homeMind").textContent=game.mind;
+document.getElementById("homeSoul").textContent=game.soul;
+document.getElementById("homeHope").textContent=game.hope;
+document.getElementById("homeOverload").textContent=game.overload;
+
+}
+
+function spend(type){
+
+if(game[type]>0){
+
+game[type]--;
+
+}else{
+
+game.overload++;
+
+if(game.overload>=5){
+
+game.overload=2;
+
+alert(
+"OVERLOAD BREAK!\n\n"+
+"The track has broken. Reset to 2 Overload "+
+"and apply a lasting GM consequence."
+);
+
+}
+
+}
+
+updateResources();
+
+}
+
+function restore(type){
+
+game[type]=Math.min(5,game[type]+1);
+
+updateResources();
+
+}
+
+function changeHope(amount){
+
+game.hope=Math.max(0,game.hope+amount);
+
+updateResources();
+
+}
+
+function changeOverload(amount){
+
+game.overload=Math.max(0,Math.min(5,game.overload+amount));
+
+updateResources();
+
+}
+
+
+/* =========================================================
+   ROLLING
+========================================================= */
+
+function d20(){
+
+return Math.floor(Math.random()*20)+1;
+
+}
+
+function quickRoll(){
+
+const stat=document.getElementById("quickStat").value;
+
+const roll=d20();
+
+const total=roll+stats[stat];
+
+document.getElementById("quickResult").textContent=total;
+
+let text="";
+
+if(roll===20){
+
+text="CRITICAL — extra effect!";
+
+}else if(roll===1){
+
+text="COMPLICATION — resource loss or consequence.";
+
+}else if(total>=22){
+
+text="Legendary success.";
+
+}else if(total>=19){
+
+text="Extreme success.";
+
+}else if(total>=16){
+
+text="Hard success.";
+
+}else if(total>=13){
+
+text="Standard success.";
+
+}else if(total>=10){
+
+text="Easy success.";
+
+}else{
+
+text="Failure.";
+
+}
+
+document.getElementById("quickText").textContent=
+`d20: ${roll} + ${stats[stat]} ${stat} = ${total} — ${text}`;
+
+}
+
+
+/* =========================================================
+   ABILITY FORGE
+========================================================= */
+
+function forgeAbility(){
+
+const name=
+document.getElementById("abilityName").value ||
+"Unnamed Ability";
+
+const element=
+document.getElementById("forgeElement").value;
+
+const expression=
+document.getElementById("forgeExpression").value;
+
+const range=
+document.getElementById("forgeRange").value;
+
+const area=
+document.getElementById("forgeArea").value;
+
+const damage=
+document.getElementById("forgeDamage").value;
+
+const effect=
+document.getElementById("forgeEffect").value ||
+"No special effect specified.";
+
+document.getElementById("forgedAbility").innerHTML=`
+
+<h3>${name}</h3>
+
+<span class="badge">${expression}</span>
+<span class="badge">${element}</span>
+<span class="badge">${range}</span>
+<span class="badge">${area}</span>
+<span class="badge">${damage}</span>
+
+<p>${effect}</p>
+
+<div class="notice">
+Ability successfully forged.
+</div>
+`;
+
+}
+
+
+/* =========================================================
+   COMBAT MAP
+========================================================= */
+
+function createMap(){
+
+const map=document.getElementById("hexmap");
+
+map.innerHTML="";
+
+for(let i=0;i<84;i++){
+
+const hex=document.createElement("div");
+
+hex.className="hex";
+
+hex.textContent=i+1;
+
+hex.onclick=()=>{
+
+combatLog(`Selected hex ${i+1}.`);
+
+};
+
+map.appendChild(hex);
+
+}
+
+}
+
+function combatLog(text){
+
+const log=document.getElementById("combatLog");
+
+const time=new Date().toLocaleTimeString();
+
+log.innerHTML+=
+`<br>[${time}] ${text}`;
+
+log.scrollTop=log.scrollHeight;
+
+}
+
+
+/* =========================================================
+   GM TOOLS
+========================================================= */
+
+function forgeEnemy(){
+
+const name=
+document.getElementById("enemyName").value ||
+"Unknown Enemy";
+
+const role=
+document.getElementById("enemyRole").value;
+
+const vitality=
+document.getElementById("enemyVitality").value;
+
+const tags=[
+"Elemental",
+"Adaptive",
+"Signature Attack"
+];
+
+const signature=
+[
+"Overwhelming Strike",
+"Elemental Burst",
+"Reality Distortion",
+"Predatory Rush"
+][Math.floor(Math.random()*4)];
+
+document.getElementById("enemyName").value=name;
+
+alert(
+`${name}\n\n`+
+`Role: ${role}\n`+
+`Vitality: ${vitality}\n\n`+
+`Defences: Evasion / Resistance / Will\n\n`+
+`Tags:\n• ${tags.join("\n• ")}\n\n`+
+`Signature: ${signature}\n\n`+
+`Reaction: Respond to a major player action.\n`+
+`Escalation: Battlefield changes when pressure rises.`
+);
+
+}
+
+function generateEncounter(){
+
+const objectives=[
+"Defeat the enemy",
+"Protect a target",
+"Reach the extraction point",
+"Survive for 5 rounds",
+"Recover an elemental relic",
+"Prevent a ritual"
+];
+
+const terrains=[
+"Collapsed laboratory",
+"Elemental wasteland",
+"Ancient ruins",
+"Vertical industrial complex",
+"Living forest",
+"Storm-covered battlefield"
+];
+
+const pressures=[
+"Rising environmental danger",
+"Reinforcements arrive",
+"Terrain collapses",
+"Resources are limited",
+"Enemy grows stronger",
+"Time limit"
+];
+
+const objective=
+objectives[Math.floor(Math.random()*objectives.length)];
+
+const terrain=
+terrains[Math.floor(Math.random()*terrains.length)];
+
+const pressure=
+pressures[Math.floor(Math.random()*pressures.length)];
+
+document.getElementById("encounterResult").innerHTML=`
+
+<strong>Objective:</strong> ${objective}<br>
+<strong>Terrain:</strong> ${terrain}<br>
+<strong>Pressure:</strong> ${pressure}<br>
+<strong>Elemental Complication:</strong>
+The battlefield's dominant element becomes unstable.
+
+`;
+
+}
+
+function generateCampaign(){
+
+const name=
+document.getElementById("campaignName").value ||
+"KYMERA Campaign";
+
+const threat=
+document.getElementById("campaignThreat").value ||
+"An unknown elemental threat";
+
+const locations=[
+"The Shattered Reach",
+"The Glass Wastes",
+"The Hollow City",
+"The Verdant Machine",
+"The Drowned Archive",
+"The Ashen Frontier"
+];
+
+const location=
+locations[Math.floor(Math.random()*locations.length)];
+
+document.getElementById("campaignResult").innerHTML=`
+
+<div class="notice">
+
+<h3>${name}</h3>
+
+<p>
+<strong>Central Threat:</strong> ${threat}
+</p>
+
+<p>
+<strong>Starting Location:</strong> ${location}
+</p>
+
+<p>
+The characters discover that the elemental balance of the region
+is changing. Strange manifestations begin appearing, each connected
+to a deeper mystery surrounding Body, Mind and Soul.
+</p>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   SAVE / LOAD
+========================================================= */
+
+function saveCharacter(){
+
+const data={
+
+name:document.getElementById("charName").value,
+
+concept:document.getElementById("charConcept").value,
+
+bodyElement:document.getElementById("bodyElement").value,
+
+mindElement:document.getElementById("mindElement").value,
+
+soulElement:document.getElementById("soulElement").value,
+
+game:game,
+
+stats:stats
+
+};
+
+localStorage.setItem(
+"KYMERA_CHARACTER",
+JSON.stringify(data)
+);
+
+alert("Character saved locally on this device.");
+
+}
+
+function loadCharacter(){
+
+const raw=
+localStorage.getItem("KYMERA_CHARACTER");
+
+if(!raw){
+
+alert("No saved character found.");
+
+return;
+
+}
+
+const data=JSON.parse(raw);
+
+document.getElementById("charName").value=
+data.name || "";
+
+document.getElementById("charConcept").value=
+data.concept || "";
+
+document.getElementById("bodyElement").value=
+data.bodyElement;
+
+document.getElementById("mindElement").value=
+data.mindElement;
+
+document.getElementById("soulElement").value=
+data.soulElement;
+
+Object.assign(game,data.game);
+
+Object.assign(stats,data.stats);
+
+renderStats();
+
+updateResources();
+
+alert("Character loaded.");
+
+}
+
+
+/* =========================================================
+   INITIALISE
+========================================================= */
+
+populateElements();
+
+renderElements();
+
+renderStats();
+
+createMap();
+
+updateResources();
+
+</script>
+
+</body>
+</html>
