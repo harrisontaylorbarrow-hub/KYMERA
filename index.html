@@ -1,0 +1,5747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1,
+               maximum-scale=1,
+               viewport-fit=cover">
+
+<meta name="theme-color" content="#080c13">
+
+<meta name="description"
+      content="KYMERA — Body, Mind & Soul. An elemental tabletop roleplaying game.">
+
+<title>KYMERA — Body, Mind & Soul</title>
+
+<style>
+
+/* =========================================================
+   KYMERA V2
+   CORE APPLICATION STYLE
+   ========================================================= */
+
+:root {
+    --bg: #080c13;
+    --bg2: #0c121c;
+    --panel: #111925;
+    --panel2: #151f2e;
+
+    --border: #28364a;
+    --border-light: #35465e;
+
+    --text: #edf3f8;
+    --muted: #8e9db2;
+
+    --accent: #6ee7d5;
+    --accent-dark: #2f9f92;
+
+    --purple: #9d8cff;
+    --blue: #6ea8ff;
+    --gold: #ffd166;
+    --red: #ff7185;
+    --green: #6ee7a8;
+    --orange: #ff9f5b;
+
+    --radius: 14px;
+    --shadow: 0 12px 35px rgba(0,0,0,.35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            rgba(54,85,120,.22),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 100% 20%,
+            rgba(103,76,150,.14),
+            transparent 30%
+        ),
+        var(--bg);
+
+    color: var(--text);
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    line-height: 1.45;
+}
+
+/* ---------------------------------------------------------
+   GENERAL ELEMENTS
+   --------------------------------------------------------- */
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: var(--text);
+
+    border-radius: 9px;
+    padding: 9px 13px;
+
+    cursor: pointer;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        transform .1s ease;
+}
+
+button:hover {
+    border-color: var(--accent);
+    background: #1c2a3d;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button.primary {
+    background: var(--accent);
+    color: #061014;
+    border-color: var(--accent);
+    font-weight: 800;
+}
+
+button.danger {
+    color: #ff9aaa;
+    border-color: #713044;
+}
+
+button.gold {
+    color: #171108;
+    background: var(--gold);
+    border-color: var(--gold);
+}
+
+button.small {
+    padding: 6px 9px;
+    font-size: 12px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    color: var(--text);
+    background: #080e16;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    padding: 9px 10px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+label {
+    display: grid;
+    gap: 5px;
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+p {
+    margin-top: 0;
+}
+
+a {
+    color: var(--accent);
+}
+
+/* ---------------------------------------------------------
+   APPLICATION LAYOUT
+   --------------------------------------------------------- */
+
+.app {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns: 245px 1fr;
+}
+
+/* ---------------------------------------------------------
+   SIDEBAR
+   --------------------------------------------------------- */
+
+.sidebar {
+    position: sticky;
+    top: 0;
+
+    height: 100vh;
+
+    padding: 20px 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0c121b,
+            #090d14
+        );
+
+    border-right: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 10;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 950;
+
+    letter-spacing: .12em;
+
+    margin-bottom: 2px;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.logo-subtitle {
+    color: var(--muted);
+    font-size: 11px;
+
+    letter-spacing: .18em;
+
+    margin-bottom: 18px;
+}
+
+.nav {
+    display: grid;
+    gap: 5px;
+}
+
+.nav button {
+    width: 100%;
+
+    text-align: left;
+
+    background: transparent;
+    border-color: transparent;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.nav button.active {
+    background: #162335;
+    border-color: #30445e;
+    color: var(--accent);
+}
+
+.nav-icon {
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+/* ---------------------------------------------------------
+   MAIN CONTENT
+   --------------------------------------------------------- */
+
+.main {
+    min-width: 0;
+    width: 100%;
+
+    padding:
+        22px
+        max(22px, env(safe-area-inset-right))
+        30px
+        max(22px, env(safe-area-inset-left));
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.page-title {
+    margin: 0;
+
+    font-size: 26px;
+    font-weight: 850;
+}
+
+.page-subtitle {
+    margin-top: 3px;
+
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.top-actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------
+   CARDS
+   --------------------------------------------------------- */
+
+.card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,26,39,.98),
+            rgba(12,18,28,.98)
+        );
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 16px;
+
+    box-shadow: var(--shadow);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+.card-header h2,
+.card-header h3 {
+    margin: 0;
+}
+
+/* ---------------------------------------------------------
+   GRID
+   --------------------------------------------------------- */
+
+.grid {
+    display: grid;
+    gap: 14px;
+}
+
+.grid-2 {
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+}
+
+.grid-3 {
+    grid-template-columns:
+        repeat(3, minmax(0,1fr));
+}
+
+.grid-4 {
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
+}
+
+.grid-6 {
+    grid-template-columns:
+        repeat(6, minmax(0,1fr));
+}
+
+/* ---------------------------------------------------------
+   STAT CARDS
+   --------------------------------------------------------- */
+
+.stat-card {
+    min-height: 105px;
+}
+
+.stat-label {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .1em;
+}
+
+.stat-value {
+    font-size: 29px;
+
+    font-weight: 900;
+
+    margin-top: 3px;
+}
+
+.stat-help {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    margin-top: 2px;
+}
+
+/* ---------------------------------------------------------
+   PILLS / CHIPS
+   --------------------------------------------------------- */
+
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pill {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 5px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    background: #101722;
+
+    border: 1px solid var(--border);
+
+    font-size: 11px;
+}
+
+.pill.accent {
+    color: var(--accent);
+    border-color: #2d716b;
+}
+
+.pill.purple {
+    color: var(--purple);
+    border-color: #50457e;
+}
+
+.pill.gold {
+    color: var(--gold);
+    border-color: #705e2d;
+}
+
+.pill.red {
+    color: var(--red);
+    border-color: #713044;
+}
+
+/* ---------------------------------------------------------
+   PROGRESS
+   --------------------------------------------------------- */
+
+.progress {
+    height: 8px;
+
+    background: #202b3a;
+
+    border-radius: 99px;
+
+    overflow: hidden;
+}
+
+.progress > span {
+    display: block;
+
+    height: 100%;
+
+    background: var(--accent);
+
+    border-radius: inherit;
+
+    transition: width .2s ease;
+}
+
+/* ---------------------------------------------------------
+   FORMS
+   --------------------------------------------------------- */
+
+.form-grid {
+    display: grid;
+
+    gap: 10px;
+}
+
+.form-2 {
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+}
+
+.form-3 {
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+}
+
+/* ---------------------------------------------------------
+   ROWS
+   --------------------------------------------------------- */
+
+.row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 9px 0;
+
+    border-bottom: 1px solid #202b3b;
+}
+
+.row:last-child {
+    border-bottom: 0;
+}
+
+.row-main {
+    min-width: 0;
+}
+
+.row-title {
+    font-weight: 700;
+}
+
+.row-sub {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* ---------------------------------------------------------
+   TABS
+   --------------------------------------------------------- */
+
+.tabs {
+    display: flex;
+
+    gap: 6px;
+
+    overflow-x: auto;
+
+    margin-bottom: 12px;
+
+    padding-bottom: 2px;
+}
+
+.tabs button {
+    white-space: nowrap;
+}
+
+.tabs button.active {
+    background: #24334a;
+
+    border-color: var(--accent);
+
+    color: var(--accent);
+}
+
+/* ---------------------------------------------------------
+   ELEMENT GRID
+   --------------------------------------------------------- */
+
+.element-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill,minmax(150px,1fr));
+
+    gap: 7px;
+}
+
+.element-card {
+    background: #0d141e;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    padding: 9px;
+
+    cursor: pointer;
+
+    transition:
+        border-color .15s,
+        transform .1s;
+}
+
+.element-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.element-number {
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.element-name {
+    font-weight: 800;
+
+    margin-top: 2px;
+}
+
+.element-symbol {
+    color: var(--accent);
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+/* ---------------------------------------------------------
+   TABLE
+   --------------------------------------------------------- */
+
+.table-wrap {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+th,
+td {
+    padding: 9px;
+
+    border-bottom: 1px solid #202b3a;
+
+    text-align: left;
+}
+
+th {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+}
+
+/* ---------------------------------------------------------
+   DICE
+   --------------------------------------------------------- */
+
+.dice-result {
+    min-height: 100px;
+
+    display: grid;
+
+    place-items: center;
+
+    text-align: center;
+
+    background: #080d15;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+}
+
+.dice-number {
+    font-size: 46px;
+
+    font-weight: 950;
+}
+
+/* ---------------------------------------------------------
+   CHARACTER SHEET
+   --------------------------------------------------------- */
+
+.character-banner {
+    display: grid;
+
+    grid-template-columns: 100px 1fr auto;
+
+    gap: 15px;
+
+    align-items: center;
+}
+
+.character-avatar {
+    width: 100px;
+    height: 100px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #253c52,
+            #161f2d
+        );
+
+    border: 1px solid var(--border);
+
+    display: grid;
+
+    place-items: center;
+
+    font-size: 36px;
+}
+
+.character-name {
+    font-size: 25px;
+
+    font-weight: 900;
+}
+
+/* ---------------------------------------------------------
+   RESOURCE ORBS
+   --------------------------------------------------------- */
+
+.resources {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 10px;
+}
+
+.resource {
+    padding: 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: #0d141e;
+}
+
+.resource-name {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+}
+
+.resource-value {
+    font-size: 25px;
+
+    font-weight: 900;
+}
+
+/* ---------------------------------------------------------
+   MODAL
+   --------------------------------------------------------- */
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.78);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px;
+
+    z-index: 100;
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-box {
+    width: min(850px,100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+}
+
+/* ---------------------------------------------------------
+   TOAST
+   --------------------------------------------------------- */
+
+.toast {
+    position: fixed;
+
+    right: 16px;
+    bottom: 16px;
+
+    background: #172437;
+
+    border: 1px solid var(--accent);
+
+    border-radius: 10px;
+
+    padding: 10px 14px;
+
+    display: none;
+
+    z-index: 200;
+
+    box-shadow: var(--shadow);
+}
+
+/* ---------------------------------------------------------
+   EMPTY
+   --------------------------------------------------------- */
+
+.empty {
+    padding: 35px 15px;
+
+    text-align: center;
+
+    color: var(--muted);
+}
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media(max-width:950px) {
+
+    .app {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: sticky;
+
+        top: 0;
+
+        width: 100%;
+
+        height: auto;
+
+        padding:
+            9px
+            max(9px,env(safe-area-inset-right))
+            9px
+            max(9px,env(safe-area-inset-left));
+
+        border-right: 0;
+
+        border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .logo-subtitle {
+        display: none;
+    }
+
+    .nav {
+        display: flex;
+
+        overflow-x: auto;
+    }
+
+    .nav button {
+        width: auto;
+
+        white-space: nowrap;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main {
+        padding: 13px;
+    }
+
+    .grid-4,
+    .grid-3,
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-6 {
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .character-banner {
+        grid-template-columns: 70px 1fr;
+    }
+
+    .character-avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .character-banner > :last-child {
+        grid-column: 1/-1;
+    }
+}
+
+@media(max-width:550px) {
+
+    .topbar {
+        flex-direction: column;
+    }
+
+    .top-actions {
+        width: 100%;
+    }
+
+    .top-actions button {
+        flex: 1;
+    }
+
+    .form-2,
+    .form-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .resources {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-6 {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            KY<span>M</span>ERA
+        </div>
+
+        <div class="logo-subtitle">
+            BODY • MIND • SOUL
+        </div>
+
+        <nav class="nav" id="navigation">
+
+            <button data-page="dashboard">
+                <span class="nav-icon">◈</span>
+                Command Deck
+            </button>
+
+            <button data-page="character">
+                <span class="nav-icon">♙</span>
+                Character
+            </button>
+
+            <button data-page="arsenal">
+                <span class="nav-icon">⚔</span>
+                Arsenal
+            </button>
+
+            <button data-page="codex">
+                <span class="nav-icon">✦</span>
+                Element Codex
+            </button>
+
+            <button data-page="combat">
+                <span class="nav-icon">⚡</span>
+                Combat
+            </button>
+
+            <button data-page="campaign">
+                <span class="nav-icon">◇</span>
+                Campaign
+            </button>
+
+            <button data-page="gm">
+                <span class="nav-icon">♜</span>
+                GM Console
+            </button>
+
+            <button data-page="rules">
+                <span class="nav-icon">☷</span>
+                Rules
+            </button>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            KYMERA v2<br>
+            Local-first edition<br><br>
+            Your data stays in this browser.
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <h1 class="page-title" id="pageTitle">
+                    Command Deck
+                </h1>
+
+                <div class="page-subtitle" id="pageSubtitle">
+                    Build heroes. Forge elements. Run campaigns.
+                </div>
+            </div>
+
+            <div class="top-actions">
+
+                <button onclick="rollD20()">
+                    🎲 D20
+                </button>
+
+                <button onclick="saveGame()">
+                    Save
+                </button>
+
+                <button onclick="exportGame()">
+                    Export
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <div id="appView"></div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL
+     ========================================================= -->
+
+<div class="modal" id="modal">
+
+    <div class="modal-box card">
+
+        <div class="card-header">
+
+            <h2 id="modalTitle">
+                KYMERA
+            </h2>
+
+            <button onclick="closeModal()">
+                ✕
+            </button>
+
+        </div>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   KYMERA V2
+   CORE GAME DATA
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   ELEMENT DATABASE
+   --------------------------------------------------------- */
+
+const ELEMENTS = [
+
+    ["Hydrogen","H","Nonmetal","Gas"],
+    ["Helium","He","Noble Gas","Gas"],
+    ["Lithium","Li","Alkali Metal","Solid"],
+    ["Beryllium","Be","Alkaline Earth","Solid"],
+    ["Boron","B","Metalloid","Solid"],
+    ["Carbon","C","Nonmetal","Solid"],
+    ["Nitrogen","N","Nonmetal","Gas"],
+    ["Oxygen","O","Nonmetal","Gas"],
+    ["Fluorine","F","Halogen","Gas"],
+    ["Neon","Ne","Noble Gas","Gas"],
+    ["Sodium","Na","Alkali Metal","Solid"],
+    ["Magnesium","Mg","Alkaline Earth","Solid"],
+    ["Aluminium","Al","Post-transition Metal","Solid"],
+    ["Silicon","Si","Metalloid","Solid"],
+    ["Phosphorus","P","Nonmetal","Solid"],
+    ["Sulfur","S","Nonmetal","Solid"],
+    ["Chlorine","Cl","Halogen","Gas"],
+    ["Argon","Ar","Noble Gas","Gas"],
+    ["Potassium","K","Alkali Metal","Solid"],
+    ["Calcium","Ca","Alkaline Earth","Solid"],
+    ["Scandium","Sc","Transition Metal","Solid"],
+    ["Titanium","Ti","Transition Metal","Solid"],
+    ["Vanadium","V","Transition Metal","Solid"],
+    ["Chromium","Cr","Transition Metal","Solid"],
+    ["Manganese","Mn","Transition Metal","Solid"],
+    ["Iron","Fe","Transition Metal","Solid"],
+    ["Cobalt","Co","Transition Metal","Solid"],
+    ["Nickel","Ni","Transition Metal","Solid"],
+    ["Copper","Cu","Transition Metal","Solid"],
+    ["Zinc","Zn","Transition Metal","Solid"],
+    ["Gallium","Ga","Post-transition Metal","Solid"],
+    ["Germanium","Ge","Metalloid","Solid"],
+    ["Arsenic","As","Metalloid","Solid"],
+    ["Selenium","Se","Nonmetal","Solid"],
+    ["Bromine","Br","Halogen","Liquid"],
+    ["Krypton","Kr","Noble Gas","Gas"],
+    ["Rubidium","Rb","Alkali Metal","Solid"],
+    ["Strontium","Sr","Alkaline Earth","Solid"],
+    ["Yttrium","Y","Transition Metal","Solid"],
+    ["Zirconium","Zr","Transition Metal","Solid"],
+    ["Niobium","Nb","Transition Metal","Solid"],
+    ["Molybdenum","Mo","Transition Metal","Solid"],
+    ["Technetium","Tc","Transition Metal","Solid"],
+    ["Ruthenium","Ru","Transition Metal","Solid"],
+    ["Rhodium","Rh","Transition Metal","Solid"],
+    ["Palladium","Pd","Transition Metal","Solid"],
+    ["Silver","Ag","Transition Metal","Solid"],
+    ["Cadmium","Cd","Transition Metal","Solid"],
+    ["Indium","In","Post-transition Metal","Solid"],
+    ["Tin","Sn","Post-transition Metal","Solid"],
+    ["Antimony","Sb","Metalloid","Solid"],
+    ["Tellurium","Te","Metalloid","Solid"],
+    ["Iodine","I","Halogen","Solid"],
+    ["Xenon","Xe","Noble Gas","Gas"],
+    ["Caesium","Cs","Alkali Metal","Solid"],
+    ["Barium","Ba","Alkaline Earth","Solid"],
+    ["Lanthanum","La","Lanthanide","Solid"],
+    ["Cerium","Ce","Lanthanide","Solid"],
+    ["Praseodymium","Pr","Lanthanide","Solid"],
+    ["Neodymium","Nd","Lanthanide","Solid"],
+    ["Promethium","Pm","Lanthanide","Solid"],
+    ["Samarium","Sm","Lanthanide","Solid"],
+    ["Europium","Eu","Lanthanide","Solid"],
+    ["Gadolinium","Gd","Lanthanide","Solid"],
+    ["Terbium","Tb","Lanthanide","Solid"],
+    ["Dysprosium","Dy","Lanthanide","Solid"],
+    ["Holmium","Ho","Lanthanide","Solid"],
+    ["Erbium","Er","Lanthanide","Solid"],
+    ["Thulium","Tm","Lanthanide","Solid"],
+    ["Ytterbium","Yb","Lanthanide","Solid"],
+    ["Lutetium","Lu","Lanthanide","Solid"],
+    ["Hafnium","Hf","Transition Metal","Solid"],
+    ["Tantalum","Ta","Transition Metal","Solid"],
+    ["Tungsten","W","Transition Metal","Solid"],
+    ["Rhenium","Re","Transition Metal","Solid"],
+    ["Osmium","Os","Transition Metal","Solid"],
+    ["Iridium","Ir","Transition Metal","Solid"],
+    ["Platinum","Pt","Transition Metal","Solid"],
+    ["Gold","Au","Transition Metal","Solid"],
+    ["Mercury","Hg","Transition Metal","Liquid"],
+    ["Thallium","Tl","Post-transition Metal","Solid"],
+    ["Lead","Pb","Post-transition Metal","Solid"],
+    ["Bismuth","Bi","Post-transition Metal","Solid"],
+    ["Polonium","Po","Post-transition Metal","Solid"],
+    ["Astatine","At","Halogen","Solid"],
+    ["Radon","Rn","Noble Gas","Gas"],
+    ["Francium","Fr","Alkali Metal","Solid"],
+    ["Radium","Ra","Alkaline Earth","Solid"],
+    ["Actinium","Ac","Actinide","Solid"],
+    ["Thorium","Th","Actinide","Solid"],
+    ["Protactinium","Pa","Actinide","Solid"],
+    ["Uranium","U","Actinide","Solid"],
+    ["Neptunium","Np","Actinide","Solid"],
+    ["Plutonium","Pu","Actinide","Solid"],
+    ["Americium","Am","Actinide","Solid"],
+    ["Curium","Cm","Actinide","Solid"],
+    ["Berkelium","Bk","Actinide","Solid"],
+    ["Californium","Cf","Actinide","Solid"],
+    ["Einsteinium","Es","Actinide","Solid"],
+    ["Fermium","Fm","Actinide","Solid"],
+    ["Mendelevium","Md","Actinide","Solid"],
+    ["Nobelium","No","Actinide","Solid"],
+    ["Lawrencium","Lr","Actinide","Solid"],
+    ["Rutherfordium","Rf","Transition Metal","Solid"],
+    ["Dubnium","Db","Transition Metal","Solid"],
+    ["Seaborgium","Sg","Transition Metal","Solid"],
+    ["Bohrium","Bh","Transition Metal","Solid"],
+    ["Hassium","Hs","Transition Metal","Solid"],
+    ["Meitnerium","Mt","Unknown","Solid"],
+    ["Darmstadtium","Ds","Unknown","Solid"],
+    ["Roentgenium","Rg","Unknown","Solid"],
+    ["Copernicium","Cn","Transition Metal","Solid"],
+    ["Nihonium","Nh","Unknown","Solid"],
+    ["Flerovium","Fl","Unknown","Solid"],
+    ["Moscovium","Mc","Unknown","Solid"],
+    ["Livermorium","Lv","Unknown","Solid"],
+    ["Tennessine","Ts","Halogen","Solid"],
+    ["Oganesson","Og","Noble Gas","Gas"]
+
+];
+
+
+/* ---------------------------------------------------------
+   ARCHETYPES
+   --------------------------------------------------------- */
+
+const ARCHETYPES = {
+
+    Vanguard: {
+        description:
+            "A frontline combatant who turns physical force into battlefield control.",
+
+        primary:
+            "Might",
+
+        features: [
+            "Bulwark",
+            "Brutal Momentum",
+            "Hold the Line"
+        ]
+    },
+
+    Striker: {
+        description:
+            "A fast offensive specialist built around mobility and decisive attacks.",
+
+        primary:
+            "Agility",
+
+        features: [
+            "Relentless Motion",
+            "Weak Point",
+            "Execution Window"
+        ]
+    },
+
+    Guardian: {
+        description:
+            "A protector who redirects danger away from allies.",
+
+        primary:
+            "Resistance",
+
+        features: [
+            "Interpose",
+            "Fortress",
+            "Shared Burden"
+        ]
+    },
+
+    Catalyst: {
+        description:
+            "A synthesis specialist who combines elemental properties into new effects.",
+
+        primary:
+            "Resonance",
+
+        features: [
+            "Elemental Fusion",
+            "Reaction Chain",
+            "Transmutation"
+        ]
+    },
+
+    Weaver: {
+        description:
+            "A battlefield controller who changes terrain, positioning and conditions.",
+
+        primary:
+            "Intellect",
+
+        features: [
+            "Zone Architect",
+            "Forced Motion",
+            "Environmental Mastery"
+        ]
+    },
+
+    Seer: {
+        description:
+            "An information specialist who predicts threats and exposes weaknesses.",
+
+        primary:
+            "Perception",
+
+        features: [
+            "Premonition",
+            "Read Resonance",
+            "Perfect Timing"
+        ]
+    },
+
+    Sovereign: {
+        description:
+            "A leader whose presence empowers allies and manipulates momentum.",
+
+        primary:
+            "Presence",
+
+        features: [
+            "Command",
+            "Rally",
+            "Inspiring Resonance"
+        ]
+    },
+
+    Aberrant: {
+        description:
+            "A dangerous experimenter who willingly pushes beyond safe limits.",
+
+        primary:
+            "Resonance",
+
+        features: [
+            "Overcharge",
+            "Mutation",
+            "Controlled Break"
+        ]
+    }
+
+};
+
+
+/* ---------------------------------------------------------
+   ORIGINS
+   --------------------------------------------------------- */
+
+const ORIGINS = [
+    "Frontier Born",
+    "City Raised",
+    "Nomadic",
+    "Archive Raised",
+    "Temple Raised",
+    "Wasteland Survivor",
+    "Engineered",
+    "Noble House",
+    "Underworld",
+    "Wildborn"
+];
+
+
+/* ---------------------------------------------------------
+   CALLINGS
+   --------------------------------------------------------- */
+
+const CALLINGS = [
+    "Mercenary",
+    "Scholar",
+    "Hunter",
+    "Explorer",
+    "Artisan",
+    "Guardian",
+    "Smuggler",
+    "Priest",
+    "Investigator",
+    "Rebel",
+    "Healer",
+    "Envoy"
+];
+
+
+/* ---------------------------------------------------------
+   SPECIALISATIONS
+   --------------------------------------------------------- */
+
+const SPECIALISATIONS = [
+    "Bulwark",
+    "Duelist",
+    "Elementalist",
+    "Tactician",
+    "Warden",
+    "Voidwalker",
+    "Stormcaller",
+    "Biomancer",
+    "Artificer",
+    "Oracle",
+    "Ravager",
+    "Manipulator",
+    "Commander",
+    "Exemplar",
+    "Trickster",
+    "Hunter",
+    "Reclaimer",
+    "Harbinger",
+    "Bastion",
+    "Riftwalker",
+    "Alchemist",
+    "Executioner",
+    "Chronist",
+    "Paragon"
+];
+
+
+/* ---------------------------------------------------------
+   CONDITIONS
+   --------------------------------------------------------- */
+
+const CONDITIONS = [
+    "Burning",
+    "Frozen",
+    "Shocked",
+    "Bleeding",
+    "Poisoned",
+    "Stunned",
+    "Marked",
+    "Frightened",
+    "Rooted",
+    "Silenced",
+    "Exposed",
+    "Invisible",
+    "Shielded",
+    "Hasted",
+    "Slowed",
+    "Overloaded",
+    "Resonating"
+];
+
+
+/* ---------------------------------------------------------
+   DAMAGE TYPES
+   --------------------------------------------------------- */
+
+const DAMAGE_TYPES = [
+
+    "Slash",
+    "Pierce",
+    "Crush",
+
+    "Heat",
+    "Cold",
+    "Electric",
+    "Chemical",
+    "Radiation",
+
+    "Psychic",
+    "Fear",
+
+    "Life",
+    "Death",
+    "Spatial",
+    "Temporal"
+
+];
+
+
+/* ---------------------------------------------------------
+   DEFAULT CHARACTER
+   --------------------------------------------------------- */
+
+function defaultCharacter() {
+
+    return {
+
+        name: "Unnamed Kymera",
+
+        pronouns: "",
+
+        description: "",
+
+        age: "",
+
+        background: "",
+
+        personality: "",
+
+        goals: "",
+
+        bonds: "",
+
+        flaws: "",
+
+        origin: "Frontier Born",
+
+        calling: "Explorer",
+
+        archetype: "Vanguard",
+
+        specialisation: "Bulwark",
+
+        level: 1,
+
+        xp: 0,
+
+        nextXP: 1000,
+
+        stats: {
+
+            Might: 2,
+            Agility: 1,
+            Intellect: 1,
+            Perception: 0,
+            Presence: 0,
+            Resonance: -1
+
+        },
+
+        elements: {
+
+            Body: "Iron",
+            Mind: "Carbon",
+            Soul: "Oxygen"
+
+        },
+
+        mastery: {
+
+            Body: 1,
+            Mind: 1,
+            Soul: 1
+
+        },
+
+        hp: 12,
+        maxHP: 12,
+
+        evasion: 10,
+        resistance: 10,
+        will: 10,
+
+        reservoirs: {
+
+            Body: 5,
+            Mind: 5,
+            Soul: 5
+
+        },
+
+        maxReservoirs: {
+
+            Body: 5,
+            Mind: 5,
+            Soul: 5
+
+        },
+
+        hope: 2,
+        maxHope: 2,
+
+        overload: 0,
+
+        equipment: [],
+
+        techniques: [],
+
+        inventory: [],
+
+        conditions: []
+
+    };
+
+}
+
+
+/* ---------------------------------------------------------
+   GAME STATE
+   --------------------------------------------------------- */
+
+let state = {
+
+    currentPage: "dashboard",
+
+    character: defaultCharacter(),
+
+    campaign: {
+
+        name: "New Campaign",
+
+        locations: [],
+
+        factions: [],
+
+        npcs: [],
+
+        quests: [],
+
+        sessions: [],
+
+        notes: ""
+
+    },
+
+    combat: {
+
+        round: 1,
+
+        active: 0,
+
+        combatants: [],
+
+        log: [],
+
+        map: []
+
+    },
+
+    settings: {
+
+        diceModifier: 0
+
+    }
+
+};
+
+
+/* ---------------------------------------------------------
+   LOCAL STORAGE
+   --------------------------------------------------------- */
+
+const STORAGE_KEY = "kymera_v2_save";
+
+
+function saveGame() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(state)
+    );
+
+    toast("KYMERA saved.");
+
+}
+
+
+function loadGame() {
+
+    const raw =
+        localStorage.getItem(STORAGE_KEY);
+
+    if (!raw) return;
+
+    try {
+
+        const loaded = JSON.parse(raw);
+
+        state = {
+            ...state,
+            ...loaded,
+
+            character: {
+                ...defaultCharacter(),
+                ...(loaded.character || {})
+            }
+
+        };
+
+    } catch (error) {
+
+        console.error(error);
+
+        toast("Save could not be loaded.");
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   EXPORT
+   --------------------------------------------------------- */
+
+function exportGame() {
+
+    const blob =
+        new Blob(
+            [JSON.stringify(state,null,2)],
+            {type:"application/json"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        "KYMERA-save.json";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+function importGameFile(file) {
+
+    const reader =
+        new FileReader();
+
+    reader.onload = event => {
+
+        try {
+
+            const imported =
+                JSON.parse(event.target.result);
+
+            state = {
+                ...state,
+                ...imported
+            };
+
+            saveGame();
+
+            render();
+
+            toast("KYMERA save imported.");
+
+        } catch {
+
+            toast("Invalid save file.");
+
+        }
+
+    };
+
+    reader.readAsText(file);
+
+}
+
+
+/* ---------------------------------------------------------
+   TOAST
+   --------------------------------------------------------- */
+
+function toast(message) {
+
+    const el =
+        document.getElementById("toast");
+
+    el.textContent = message;
+
+    el.style.display = "block";
+
+    clearTimeout(window.__toast);
+
+    window.__toast =
+        setTimeout(() => {
+
+            el.style.display = "none";
+
+        },2200);
+
+}
+
+
+/* ---------------------------------------------------------
+   MODAL
+   --------------------------------------------------------- */
+
+function openModal(title,content) {
+
+    document.getElementById("modalTitle")
+        .textContent = title;
+
+    document.getElementById("modalContent")
+        .innerHTML = content;
+
+    document.getElementById("modal")
+        .classList.add("open");
+
+}
+
+
+function closeModal() {
+
+    document.getElementById("modal")
+        .classList.remove("open");
+
+}
+
+
+/* ---------------------------------------------------------
+   DICE ENGINE
+   --------------------------------------------------------- */
+
+function d20() {
+
+    return Math.floor(
+        Math.random()*20
+    ) + 1;
+
+}
+
+
+function rollD20() {
+
+    const result = d20();
+
+    let outcome;
+
+    if (result === 20) {
+
+        outcome =
+            "CRITICAL — extraordinary effect.";
+
+    } else if (result === 1) {
+
+        outcome =
+            "COMPLICATION — something goes wrong.";
+
+    } else {
+
+        outcome =
+            "Natural result.";
+
+    }
+
+    openModal(
+        "D20 Roll",
+        `
+        <div class="dice-result">
+
+            <div>
+
+                <div class="dice-number">
+                    ${result}
+                </div>
+
+                <div class="muted">
+                    ${outcome}
+                </div>
+
+            </div>
+
+        </div>
+        `
+    );
+
+}
+
+
+/* ---------------------------------------------------------
+   SKILL CHECK
+   --------------------------------------------------------- */
+
+function skillCheck(stat, difficulty = 13) {
+
+    const roll = d20();
+
+    const modifier =
+        state.character.stats[stat] || 0;
+
+    const total =
+        roll + modifier;
+
+    const success =
+        total >= difficulty;
+
+    return {
+
+        roll,
+        modifier,
+        total,
+        success
+
+    };
+
+}
+
+
+/* ---------------------------------------------------------
+   CHARACTER STAT HELPERS
+   --------------------------------------------------------- */
+
+function statModifier(stat) {
+
+    return state.character.stats[stat] || 0;
+
+}
+
+
+function changeResource(type,amount) {
+
+    const r =
+        state.character.reservoirs;
+
+    const max =
+        state.character.maxReservoirs;
+
+    r[type] =
+        Math.max(
+            0,
+            Math.min(
+                max[type],
+                r[type] + amount
+            )
+        );
+
+    saveGame();
+
+    render();
+
+}
+
+
+function changeHope(amount) {
+
+    state.character.hope =
+        Math.max(
+            0,
+            Math.min(
+                state.character.maxHope,
+                state.character.hope + amount
+            )
+        );
+
+    saveGame();
+
+    render();
+
+}
+
+
+function changeOverload(amount) {
+
+    state.character.overload =
+        Math.max(
+            0,
+            state.character.overload + amount
+        );
+
+    if (state.character.overload >= 5) {
+
+        state.character.overload = 2;
+
+        toast(
+            "BREAK! The GM gains a lasting consequence."
+        );
+
+    }
+
+    saveGame();
+
+    render();
+
+}
+
+
+/* ---------------------------------------------------------
+   LEVEL SYSTEM
+   --------------------------------------------------------- */
+
+function xpForLevel(level) {
+
+    return level * 1000;
+
+}
+
+
+function gainXP(amount) {
+
+    const c =
+        state.character;
+
+    c.xp += amount;
+
+    let levelled = false;
+
+    while (
+        c.level < 20 &&
+        c.xp >= xpForLevel(c.level)
+    ) {
+
+        c.xp -= xpForLevel(c.level);
+
+        levelUp();
+
+        levelled = true;
+
+    }
+
+    saveGame();
+
+    render();
+
+    if (levelled) {
+
+        toast(
+            `Level ${c.level} reached!`
+        );
+
+    }
+
+}
+
+
+function levelUp() {
+
+    const c =
+        state.character;
+
+    c.level++;
+
+    c.maxHP += 2;
+
+    c.hp = c.maxHP;
+
+    c.maxReservoirs.Body++;
+    c.maxReservoirs.Mind++;
+    c.maxReservoirs.Soul++;
+
+    c.reservoirs.Body =
+        c.maxReservoirs.Body;
+
+    c.reservoirs.Mind =
+        c.maxReservoirs.Mind;
+
+    c.reservoirs.Soul =
+        c.maxReservoirs.Soul;
+
+    if (
+        [4,8,12,16].includes(c.level)
+    ) {
+
+        toast(
+            "Ability improvement available."
+        );
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   CHARACTER CREATION
+   --------------------------------------------------------- */
+
+function setCharacterField(field,value) {
+
+    state.character[field] = value;
+
+    saveGame();
+
+    render();
+
+}
+
+
+/* ---------------------------------------------------------
+   NAVIGATION
+   --------------------------------------------------------- */
+
+document
+    .querySelectorAll("#navigation button")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                state.currentPage =
+                    button.dataset.page;
+
+                render();
+
+            }
+        );
+
+    });
+
+
+/* ---------------------------------------------------------
+   PAGE TITLES
+   --------------------------------------------------------- */
+
+const PAGE_INFO = {
+
+    dashboard: [
+        "Command Deck",
+        "Your KYMERA control centre."
+    ],
+
+    character: [
+        "Character",
+        "Build, develop and control your Kymera."
+    ],
+
+    arsenal: [
+        "Arsenal",
+        "Weapons, techniques and elemental equipment."
+    ],
+
+    codex: [
+        "Element Codex",
+        "The 118 elements that power KYMERA."
+    ],
+
+    combat: [
+        "Combat",
+        "Initiative, tactical battlefield and encounter tools."
+    ],
+
+    campaign: [
+        "Campaign",
+        "Build your world, story and consequences."
+    ],
+
+    gm: [
+        "GM Console",
+        "Create encounters, enemies and rewards."
+    ],
+
+    rules: [
+        "Rules",
+        "The KYMERA rules reference."
+    ]
+
+};
+
+
+/* ---------------------------------------------------------
+   MAIN RENDER
+   --------------------------------------------------------- */
+
+function render() {
+
+    const page =
+        state.currentPage;
+
+    const info =
+        PAGE_INFO[page];
+
+    document.getElementById("pageTitle")
+        .textContent = info[0];
+
+    document.getElementById("pageSubtitle")
+        .textContent = info[1];
+
+    document
+        .querySelectorAll("#navigation button")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.page === page
+            );
+
+        });
+
+    const views = {
+
+        dashboard: renderDashboard,
+
+        character: renderCharacter,
+
+        arsenal: renderArsenal,
+
+        codex: renderCodex,
+
+        combat: renderCombat,
+
+        campaign: renderCampaign,
+
+        gm: renderGM,
+
+        rules: renderRules
+
+    };
+
+    document.getElementById("appView")
+        .innerHTML =
+            views[page]();
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+function renderDashboard() {
+
+    const c =
+        state.character;
+
+    const xpPercent =
+        Math.min(
+            100,
+            (c.xp / xpForLevel(c.level))*100
+        );
+
+    return `
+
+    <div class="grid grid-4">
+
+        <div class="card stat-card">
+
+            <div class="stat-label">
+                Level
+            </div>
+
+            <div class="stat-value">
+                ${c.level}
+            </div>
+
+            <div class="stat-help">
+                ${c.xp} / ${xpForLevel(c.level)} XP
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card">
+
+            <div class="stat-label">
+                Vitality
+            </div>
+
+            <div class="stat-value">
+                ${c.hp}/${c.maxHP}
+            </div>
+
+            <div class="stat-help">
+                Evasion ${c.evasion}
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card">
+
+            <div class="stat-label">
+                Hope
+            </div>
+
+            <div class="stat-value">
+                ${c.hope}/${c.maxHope}
+            </div>
+
+            <div class="stat-help">
+                Narrative momentum
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card">
+
+            <div class="stat-label">
+                Overload
+            </div>
+
+            <div class="stat-value">
+                ${c.overload}/5
+            </div>
+
+            <div class="stat-help">
+                Break at 5
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-2">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    ${escapeHTML(c.name)}
+                </h2>
+
+                <span class="pill accent">
+                    ${escapeHTML(c.archetype)}
+                </span>
+
+            </div>
+
+            <p class="muted">
+                ${escapeHTML(c.description || "Your Kymera has not written their story yet.")}
+            </p>
+
+            <div class="pills">
+
+                <span class="pill">
+                    Body: ${escapeHTML(c.elements.Body)}
+                </span>
+
+                <span class="pill">
+                    Mind: ${escapeHTML(c.elements.Mind)}
+                </span>
+
+                <span class="pill">
+                    Soul: ${escapeHTML(c.elements.Soul)}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Progression
+                </h2>
+
+                <span>
+                    Level ${c.level}
+                </span>
+
+            </div>
+
+            <div class="progress">
+
+                <span style="width:${xpPercent}%"></span>
+
+            </div>
+
+            <div class="row">
+
+                <span class="muted">
+                    XP
+                </span>
+
+                <strong>
+                    ${c.xp}/${xpForLevel(c.level)}
+                </strong>
+
+            </div>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    onclick="gainXP(250)"
+                >
+                    +250 XP
+                </button>
+
+                <button
+                    onclick="gainXP(500)"
+                >
+                    +500 XP
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Reservoirs
+            </h2>
+
+            <span class="muted">
+                Elemental capacity
+            </span>
+
+        </div>
+
+        <div class="resources">
+
+            ${resourceHTML("Body")}
+            ${resourceHTML("Mind")}
+            ${resourceHTML("Soul")}
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-3">
+
+        <div class="card">
+
+            <h3>
+                Quick Roll
+            </h3>
+
+            <p class="muted">
+                Make a basic d20 test.
+            </p>
+
+            <button
+                class="primary"
+                onclick="rollD20()"
+            >
+                Roll d20
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Character
+            </h3>
+
+            <p class="muted">
+                Open your interactive character sheet.
+            </p>
+
+            <button
+                onclick="state.currentPage='character';render()"
+            >
+                Open Sheet
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                GM
+            </h3>
+
+            <p class="muted">
+                Build encounters and manage the campaign.
+            </p>
+
+            <button
+                onclick="state.currentPage='gm';render()"
+            >
+                GM Console
+            </button>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function resourceHTML(type) {
+
+    const c =
+        state.character;
+
+    return `
+
+    <div class="resource">
+
+        <div class="resource-name">
+            ${type} Reservoir
+        </div>
+
+        <div class="resource-value">
+            ${c.reservoirs[type]}
+            /
+            ${c.maxReservoirs[type]}
+        </div>
+
+        <div class="actions">
+
+            <button
+                class="small"
+                onclick="changeResource('${type}',-1)"
+            >
+                −
+            </button>
+
+            <button
+                class="small"
+                onclick="changeResource('${type}',1)"
+            >
+                +
+            </button>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   CHARACTER PAGE
+   ========================================================= */
+
+function renderCharacter() {
+
+    const c =
+        state.character;
+
+    return `
+
+    <div class="card">
+
+        <div class="character-banner">
+
+            <div class="character-avatar">
+                ${getAvatarLetter(c.name)}
+            </div>
+
+            <div>
+
+                <div class="character-name">
+                    ${escapeHTML(c.name)}
+                </div>
+
+                <div class="muted">
+                    Level ${c.level}
+                    •
+                    ${escapeHTML(c.archetype)}
+                    •
+                    ${escapeHTML(c.specialisation)}
+                </div>
+
+                <div class="pills" style="margin-top:7px">
+
+                    <span class="pill accent">
+                        ${escapeHTML(c.origin)}
+                    </span>
+
+                    <span class="pill purple">
+                        ${escapeHTML(c.calling)}
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <button
+                    class="primary"
+                    onclick="characterCreationModal()"
+                >
+                    Edit Character
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-3">
+
+        ${statBox("Might")}
+        ${statBox("Agility")}
+        ${statBox("Intellect")}
+        ${statBox("Perception")}
+        ${statBox("Presence")}
+        ${statBox("Resonance")}
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-2">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Vitals
+                </h2>
+
+            </div>
+
+            <div class="form-grid form-3">
+
+                <label>
+                    HP
+                    <input
+                        type="number"
+                        value="${c.hp}"
+                        onchange="updateNumber('hp',this.value)"
+                    >
+                </label>
+
+                <label>
+                    Max HP
+                    <input
+                        type="number"
+                        value="${c.maxHP}"
+                        onchange="updateNumber('maxHP',this.value)"
+                    >
+                </label>
+
+                <label>
+                    Evasion
+                    <input
+                        type="number"
+                        value="${c.evasion}"
+                        onchange="updateNumber('evasion',this.value)"
+                    >
+                </label>
+
+                <label>
+                    Resistance
+                    <input
+                        type="number"
+                        value="${c.resistance}"
+                        onchange="updateNumber('resistance',this.value)"
+                    >
+                </label>
+
+                <label>
+                    Will
+                    <input
+                        type="number"
+                        value="${c.will}"
+                        onchange="updateNumber('will',this.value)"
+                    >
+                </label>
+
+                <label>
+                    Overload
+                    <input
+                        type="number"
+                        value="${c.overload}"
+                        onchange="updateNumber('overload',this.value)"
+                    >
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Hope
+                </h2>
+
+                <span class="pill gold">
+                    ${c.hope}/${c.maxHope}
+                </span>
+
+            </div>
+
+            <p class="muted">
+                Hope can reroll a test, assist an ally,
+                or reduce an Overload result.
+            </p>
+
+            <div class="actions">
+
+                <button onclick="changeHope(-1)">
+                    Spend Hope
+                </button>
+
+                <button onclick="changeHope(1)">
+                    Gain Hope
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Body • Mind • Soul
+            </h2>
+
+            <span class="muted">
+                Elemental identity
+            </span>
+
+        </div>
+
+        <div class="grid grid-3">
+
+            ${elementChoiceHTML("Body")}
+            ${elementChoiceHTML("Mind")}
+            ${elementChoiceHTML("Soul")}
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-2">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Conditions
+                </h2>
+
+            </div>
+
+            ${
+                c.conditions.length
+                ?
+                `<div class="pills">
+                    ${c.conditions.map(condition => `
+                        <span class="pill red">
+                            ${escapeHTML(condition)}
+                            <button
+                                class="small"
+                                onclick="removeCondition('${escapeAttribute(condition)}')"
+                            >
+                                ×
+                            </button>
+                        </span>
+                    `).join("")}
+                </div>`
+                :
+                `<div class="empty">
+                    No active conditions.
+                </div>`
+            }
+
+            <select
+                onchange="if(this.value){addCondition(this.value);this.value=''}"
+            >
+
+                <option value="">
+                    Add condition...
+                </option>
+
+                ${
+                    CONDITIONS.map(
+                        condition =>
+                        `<option>${condition}</option>`
+                    ).join("")
+                }
+
+            </select>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Biography
+                </h2>
+
+            </div>
+
+            <div class="row">
+
+                <span class="muted">
+                    Personality
+                </span>
+
+                <span>
+                    ${escapeHTML(c.personality || "—")}
+                </span>
+
+            </div>
+
+            <div class="row">
+
+                <span class="muted">
+                    Goals
+                </span>
+
+                <span>
+                    ${escapeHTML(c.goals || "—")}
+                </span>
+
+            </div>
+
+            <div class="row">
+
+                <span class="muted">
+                    Bonds
+                </span>
+
+                <span>
+                    ${escapeHTML(c.bonds || "—")}
+                </span>
+
+            </div>
+
+            <div class="row">
+
+                <span class="muted">
+                    Flaws
+                </span>
+
+                <span>
+                    ${escapeHTML(c.flaws || "—")}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function statBox(stat) {
+
+    const value =
+        state.character.stats[stat];
+
+    return `
+
+    <div class="card stat-card">
+
+        <div class="stat-label">
+            ${stat}
+        </div>
+
+        <div class="stat-value">
+            ${value >= 0 ? "+" : ""}${value}
+        </div>
+
+        <div class="stat-help">
+            d20 + ${stat}
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function elementChoiceHTML(type) {
+
+    const c =
+        state.character;
+
+    return `
+
+    <div class="card">
+
+        <div class="stat-label">
+            ${type}
+        </div>
+
+        <h3 style="margin-top:5px">
+            ${escapeHTML(c.elements[type])}
+        </h3>
+
+        <div class="muted">
+            Mastery ${c.mastery[type]}
+        </div>
+
+        <button
+            class="small"
+            onclick="chooseElement('${type}')"
+        >
+            Change Element
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+function chooseElement(type) {
+
+    openModal(
+
+        `${type} Element`,
+
+        `
+
+        <p class="muted">
+            Choose the element bound to your
+            ${type} aspect.
+        </p>
+
+        <div class="element-grid">
+
+            ${
+                ELEMENTS.map((element,index) => `
+
+                    <div
+                        class="element-card"
+                        onclick="setElement('${type}',${index})"
+                    >
+
+                        <div class="element-number">
+                            ${index+1}
+                        </div>
+
+                        <div class="element-name">
+                            ${escapeHTML(element[0])}
+                        </div>
+
+                        <div class="element-symbol">
+                            ${escapeHTML(element[1])}
+                        </div>
+
+                    </div>
+
+                `).join("")
+            }
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+function setElement(type,index) {
+
+    state.character.elements[type] =
+        ELEMENTS[index][0];
+
+    saveGame();
+
+    closeModal();
+
+    render();
+
+    toast(
+        `${type} bonded to ${ELEMENTS[index][0]}.`
+    );
+
+}
+
+
+/* =========================================================
+   CHARACTER CREATION MODAL
+   ========================================================= */
+
+function characterCreationModal() {
+
+    const c =
+        state.character;
+
+    openModal(
+
+        "Character Creator",
+
+        `
+
+        <div class="tabs">
+
+            <button
+                class="active"
+                onclick="creatorTab('identity')"
+            >
+                Identity
+            </button>
+
+            <button
+                onclick="creatorTab('build')"
+            >
+                Build
+            </button>
+
+            <button
+                onclick="creatorTab('story')"
+            >
+                Story
+            </button>
+
+        </div>
+
+
+        <div id="creatorContent">
+
+            ${creatorIdentity()}
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+function creatorTab(tab) {
+
+    const target =
+        document.getElementById("creatorContent");
+
+    if (!target) return;
+
+    if (tab === "identity") {
+
+        target.innerHTML =
+            creatorIdentity();
+
+    }
+
+    if (tab === "build") {
+
+        target.innerHTML =
+            creatorBuild();
+
+    }
+
+    if (tab === "story") {
+
+        target.innerHTML =
+            creatorStory();
+
+    }
+
+}
+
+
+function creatorIdentity() {
+
+    const c =
+        state.character;
+
+    return `
+
+    <div class="form-grid form-2">
+
+        <label>
+            Character Name
+
+            <input
+                value="${escapeAttribute(c.name)}"
+                onchange="state.character.name=this.value;saveGame();render()"
+            >
+
+        </label>
+
+
+        <label>
+            Pronouns
+
+            <input
+                value="${escapeAttribute(c.pronouns)}"
+                onchange="state.character.pronouns=this.value;saveGame()"
+            >
+
+        </label>
+
+
+        <label>
+            Age
+
+            <input
+                value="${escapeAttribute(c.age)}"
+                onchange="state.character.age=this.value;saveGame()"
+            >
+
+        </label>
+
+
+        <label>
+            Origin
+
+            <select
+                onchange="state.character.origin=this.value;saveGame();render()"
+            >
+
+                ${
+                    ORIGINS.map(
+                        x =>
+                        `<option ${x===c.origin?"selected":""}>
+                            ${x}
+                        </option>`
+                    ).join("")
+                }
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Calling
+
+            <select
+                onchange="state.character.calling=this.value;saveGame();render()"
+            >
+
+                ${
+                    CALLINGS.map(
+                        x =>
+                        `<option ${x===c.calling?"selected":""}>
+                            ${x}
+                        </option>`
+                    ).join("")
+                }
+
+            </select>
+
+        </label>
+
+    </div>
+
+
+    <div style="height:10px"></div>
+
+
+    <label>
+        Character Description
+
+        <textarea
+            onchange="state.character.description=this.value;saveGame()"
+        >${escapeHTML(c.description)}</textarea>
+
+    </label>
+
+    `;
+
+}
+
+
+function creatorBuild() {
+
+    const c =
+        state.character;
+
+    return `
+
+    <div class="form-grid">
+
+        <label>
+            Archetype
+
+            <select
+                onchange="state.character.archetype=this.value;saveGame();render()"
+            >
+
+                ${
+                    Object.keys(ARCHETYPES).map(
+                        x =>
+                        `<option ${x===c.archetype?"selected":""}>
+                            ${x}
+                        </option>`
+                    ).join("")
+                }
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Specialisation
+
+            <select
+                onchange="state.character.specialisation=this.value;saveGame();render()"
+            >
+
+                ${
+                    SPECIALISATIONS.map(
+                        x =>
+                        `<option ${x===c.specialisation?"selected":""}>
+                            ${x}
+                        </option>`
+                    ).join("")
+                }
+
+            </select>
+
+        </label>
+
+
+        <div class="card">
+
+            <h3>
+                Archetype
+            </h3>
+
+            <p class="muted">
+                ${escapeHTML(
+                    ARCHETYPES[c.archetype].description
+                )}
+            </p>
+
+            <div class="pills">
+
+                ${
+                    ARCHETYPES[c.archetype].features
+                    .map(
+                        feature =>
+                        `<span class="pill accent">
+                            ${feature}
+                        </span>`
+                    ).join("")
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function creatorStory() {
+
+    const c =
+        state.character;
+
+    return `
+
+    <div class="form-grid">
+
+        <label>
+            Personality
+
+            <textarea
+                onchange="state.character.personality=this.value;saveGame()"
+            >${escapeHTML(c.personality)}</textarea>
+
+        </label>
+
+
+        <label>
+            Goals
+
+            <textarea
+                onchange="state.character.goals=this.value;saveGame()"
+            >${escapeHTML(c.goals)}</textarea>
+
+        </label>
+
+
+        <label>
+            Bonds
+
+            <textarea
+                onchange="state.character.bonds=this.value;saveGame()"
+            >${escapeHTML(c.bonds)}</textarea>
+
+        </label>
+
+
+        <label>
+            Flaws
+
+            <textarea
+                onchange="state.character.flaws=this.value;saveGame()"
+            >${escapeHTML(c.flaws)}</textarea>
+
+        </label>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   CHARACTER HELPERS
+   ========================================================= */
+
+function updateNumber(field,value) {
+
+    state.character[field] =
+        Number(value);
+
+    saveGame();
+
+}
+
+
+function addCondition(condition) {
+
+    if (
+        !state.character.conditions.includes(condition)
+    ) {
+
+        state.character.conditions.push(
+            condition
+        );
+
+    }
+
+    saveGame();
+
+    render();
+
+}
+
+
+function removeCondition(condition) {
+
+    state.character.conditions =
+        state.character.conditions.filter(
+            x => x !== condition
+        );
+
+    saveGame();
+
+    render();
+
+}
+
+
+function getAvatarLetter(name) {
+
+    if (!name) return "?";
+
+    return name
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+}
+
+
+/* =========================================================
+   ARSENAL — INITIAL FRAMEWORK
+   ========================================================= */
+
+const WEAPON_SEEDS = [
+
+    ["Ironjaw","Melee","Crush","Heavy"],
+    ["Glassfang","Melee","Slash","Precise"],
+    ["Storm Pike","Melee","Electric","Reach"],
+    ["Emberblade","Melee","Heat","Burn"],
+    ["Frostbrand","Melee","Cold","Slow"],
+    ["Grav Hammer","Melee","Crush","Force"],
+    ["Rift Spear","Melee","Spatial","Reach"],
+    ["Pulse Gauntlet","Melee","Electric","Combo"],
+    ["Blacksteel Axe","Melee","Slash","Brutal"],
+    ["Titan Maul","Melee","Crush","Stagger"],
+
+    ["Needle Rifle","Ranged","Pierce","Precise"],
+    ["Sunshot","Ranged","Heat","Burn"],
+    ["Frostcaster","Ranged","Cold","Slow"],
+    ["Arc Carbine","Ranged","Electric","Chain"],
+    ["Void Bow","Ranged","Spatial","Phase"],
+    ["Shardcaster","Ranged","Pierce","Scatter"],
+    ["Resonance Pistol","Ranged","Psychic","Focus"],
+    ["Grav Launcher","Ranged","Crush","Push"],
+    ["Chemical Sprayer","Ranged","Chemical","Zone"],
+    ["Radiant Rifle","Ranged","Radiation","Mark"],
+
+    ["Aegis Plate","Defensive","—","Shield"],
+    ["Reactive Mantle","Defensive","—","Reaction"],
+    ["Phase Cloak","Defensive","Spatial","Evasion"],
+    ["Storm Buckler","Defensive","Electric","Counter"],
+    ["Thermal Shell","Defensive","Heat","Resistance"],
+
+    ["Resonance Lens","Utility","Psychic","Scan"],
+    ["Void Compass","Utility","Spatial","Navigate"],
+    ["Memory Coil","Utility","Psychic","Recall"],
+    ["Life Seed","Utility","Life","Restore"],
+    ["Temporal Anchor","Utility","Temporal","Anchor"]
+
+];
+
+
+function generateWeapons() {
+
+    const weapons = [];
+
+    WEAPON_SEEDS.forEach(
+        (seed,index) => {
+
+            weapons.push({
+
+                id:
+                    `W-${index+1}`,
+
+                name:
+                    seed[0],
+
+                category:
+                    seed[1],
+
+                damageType:
+                    seed[2],
+
+                tag:
+                    seed[3],
+
+                damage:
+                    index % 5 + 2,
+
+                range:
+                    seed[1] === "Ranged"
+                    ? 6 + (index%4)
+                    : 1,
+
+                weight:
+                    seed[1] === "Defensive"
+                    ? 2
+                    : 1,
+
+                interaction:
+                    "Can interact with compatible elemental tags.",
+
+                special:
+                    weaponSpecial(seed[3])
+
+            });
+
+        }
+    );
+
+    return weapons;
+
+}
+
+
+function weaponSpecial(tag) {
+
+    const specials = {
+
+        Heavy:
+            "If you moved 0 spaces this turn, deal +1 damage.",
+
+        Precise:
+            "Ignore 1 point of cover.",
+
+        Reach:
+            "May attack one additional space away.",
+
+        Burn:
+            "On a critical hit, apply Burning.",
+
+        Slow:
+            "On a critical hit, apply Slowed.",
+
+        Force:
+            "Push the target 1 space on a hit.",
+
+        Phase:
+            "May pass through one obstacle during movement.",
+
+        Combo:
+            "If this is your second attack this turn, gain +1.",
+
+        Brutal:
+            "On a critical hit, add +2 damage.",
+
+        Stagger:
+            "On a critical hit, apply Stunned.",
+
+        Chain:
+            "A second target within 2 spaces takes 1 damage.",
+
+        Scatter:
+            "May attack a second adjacent target for -2.",
+
+        Focus:
+            "Gain +1 on the next Resonance roll.",
+
+        Push:
+            "Push the target 2 spaces.",
+
+        Zone:
+            "Create a hazardous 1-space zone until your next turn.",
+
+        Mark:
+            "Mark the target until the end of your next turn.",
+
+        Shield:
+            "Reaction: reduce incoming damage by 2.",
+
+        Reaction:
+            "Gain +1 Resistance until your next turn.",
+
+        Evasion:
+            "Reaction: gain +2 Evasion against one attack.",
+
+        Counter:
+            "When hit by Electric damage, deal 1 back.",
+
+        Resistance:
+            "Reduce Heat damage by 1.",
+
+        Scan:
+            "Reveal one hidden creature or hazard.",
+
+        Navigate:
+            "Always know the direction of a chosen location.",
+
+        Recall:
+            "Once per scene, remember a relevant detail.",
+
+        Restore:
+            "Restore 2 HP once per rest.",
+
+        Anchor:
+            "You cannot be forcibly moved while anchored."
+
+    };
+
+    return specials[tag] ||
+        "No additional special rule.";
+
+}
+
+
+/* =========================================================
+   ARSENAL PAGE
+   ========================================================= */
+
+function renderArsenal() {
+
+    const weapons =
+        generateWeapons();
+
+    return `
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Arsenal
+            </h2>
+
+            <span class="pill accent">
+                ${weapons.length} indexed weapons
+            </span>
+
+        </div>
+
+        <p class="muted">
+            Equipment in KYMERA changes tactical options
+            and elemental interactions rather than simply
+            increasing numerical power.
+        </p>
+
+        <input
+            class="search"
+            placeholder="Search weapons..."
+            oninput="filterArsenal(this.value)"
+        >
+
+        <div id="arsenalTable">
+
+            ${weaponTable(weapons)}
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function weaponTable(weapons) {
+
+    return `
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Weapon
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Damage
+                    </th>
+
+                    <th>
+                        Type
+                    </th>
+
+                    <th>
+                        Tag
+                    </th>
+
+                    <th>
+                        Range
+                    </th>
+
+                    <th>
+                        Special
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${
+                    weapons.map(
+                        weapon => `
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    ${escapeHTML(weapon.name)}
+                                </strong>
+                            </td>
+
+                            <td>
+                                ${escapeHTML(weapon.category)}
+                            </td>
+
+                            <td>
+                                ${weapon.damage}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(weapon.damageType)}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(weapon.tag)}
+                            </td>
+
+                            <td>
+                                ${weapon.range}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(weapon.special)}
+                            </td>
+
+                        </tr>
+
+                        `
+                    ).join("")
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
+
+}
+
+
+function filterArsenal(query) {
+
+    const weapons =
+        generateWeapons();
+
+    const q =
+        query.toLowerCase();
+
+    const filtered =
+        weapons.filter(
+            weapon =>
+                Object.values(weapon)
+                    .join(" ")
+                    .toLowerCase()
+                    .includes(q)
+        );
+
+    const target =
+        document.getElementById("arsenalTable");
+
+    if (target) {
+
+        target.innerHTML =
+            weaponTable(filtered);
+
+    }
+
+}
+
+
+/* =========================================================
+   ELEMENT CODEX
+   ========================================================= */
+
+function renderCodex() {
+
+    return `
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Element Codex
+            </h2>
+
+            <span class="pill accent">
+                ${ELEMENTS.length} elements
+            </span>
+
+        </div>
+
+        <p class="muted">
+            Every element is a possible KYMERA resonance.
+            The game treats elemental presence as a source
+            of Body, Mind or Soul expression.
+        </p>
+
+        <input
+            class="search"
+            placeholder="Search the periodic table..."
+            oninput="filterElements(this.value)"
+        >
+
+        <div
+            class="element-grid"
+            id="elementGrid"
+        >
+
+            ${elementCards(ELEMENTS)}
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function elementCards(elements) {
+
+    return elements.map(
+        (element,index) => `
+
+        <div
+            class="element-card"
+            onclick="showElement(${ELEMENTS.indexOf(element)})"
+        >
+
+            <div class="element-number">
+                ${index+1}
+            </div>
+
+            <div class="element-name">
+                ${escapeHTML(element[0])}
+            </div>
+
+            <div class="element-symbol">
+                ${escapeHTML(element[1])}
+            </div>
+
+            <div class="muted">
+                ${escapeHTML(element[2])}
+                •
+                ${escapeHTML(element[3])}
+            </div>
+
+        </div>
+
+        `
+    ).join("");
+
+}
+
+
+function filterElements(query) {
+
+    const q =
+        query.toLowerCase();
+
+    const filtered =
+        ELEMENTS.filter(
+            element =>
+                element.join(" ")
+                    .toLowerCase()
+                    .includes(q)
+        );
+
+    document.getElementById("elementGrid")
+        .innerHTML =
+            elementCards(filtered);
+
+}
+
+
+function showElement(index) {
+
+    const e =
+        ELEMENTS[index];
+
+    if (!e) return;
+
+    openModal(
+
+        `${e[0]} (${e[1]})`,
+
+        `
+
+        <div class="grid grid-2">
+
+            <div>
+
+                <div class="stat-label">
+                    Atomic Number
+                </div>
+
+                <div class="stat-value">
+                    ${index+1}
+                </div>
+
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    Classification
+                </div>
+
+                <div class="stat-value"
+                     style="font-size:20px">
+
+                    ${escapeHTML(e[2])}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card">
+
+            <h3>
+                KYMERA Resonance
+            </h3>
+
+            <p>
+                ${escapeHTML(e[0])} can be assigned as a
+                Body, Mind or Soul element. Its exact
+                expression depends on the character's
+                techniques, equipment and synthesis.
+            </p>
+
+            <div class="pills">
+
+                <span class="pill accent">
+                    ${escapeHTML(e[2])}
+                </span>
+
+                <span class="pill">
+                    ${escapeHTML(e[3])}
+                </span>
+
+            </div>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+/* =========================================================
+   COMBAT PAGE
+   ========================================================= */
+
+function renderCombat() {
+
+    return `
+
+    <div class="grid grid-3">
+
+        <div class="card">
+
+            <div class="stat-label">
+                ROUND
+            </div>
+
+            <div class="stat-value">
+                ${state.combat.round}
+            </div>
+
+            <div class="actions">
+
+                <button
+                    class="primary"
+                    onclick="nextRound()"
+                >
+                    Next Round
+                </button>
+
+                <button
+                    onclick="addCombatant()"
+                >
+                    Add Combatant
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="stat-label">
+                COMBATANTS
+            </div>
+
+            <div class="stat-value">
+                ${state.combat.combatants.length}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="stat-label">
+                ACTIVE
+            </div>
+
+            <div class="stat-value">
+
+                ${
+                    state.combat.combatants.length
+                    ?
+                    escapeHTML(
+                        state.combat
+                            .combatants[
+                                state.combat.active
+                            ]?.name || "—"
+                    )
+                    :
+                    "—"
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-2">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Initiative
+                </h2>
+
+                <button
+                    class="small"
+                    onclick="rollInitiative()"
+                >
+                    Roll Initiative
+                </button>
+
+            </div>
+
+            ${
+                initiativeList()
+            }
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Combat Log
+                </h2>
+
+                <button
+                    class="small"
+                    onclick="state.combat.log=[];saveGame();render()"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+            <div class="log">
+
+                ${
+                    state.combat.log.length
+                    ?
+                    state.combat.log
+                        .map(
+                            x =>
+                            `<div>${escapeHTML(x)}</div>`
+                        )
+                        .join("")
+                    :
+                    `<div class="muted">
+                        Combat log is empty.
+                    </div>`
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Tactical Battlefield
+            </h2>
+
+            <span class="muted">
+                12 × 7
+            </span>
+
+        </div>
+
+        <div class="map">
+
+            ${battleMapHTML()}
+
+        </div>
+
+        <div class="actions" style="margin-top:10px">
+
+            <button onclick="paintMap('floor')">
+                Floor
+            </button>
+
+            <button onclick="paintMap('wall')">
+                Wall
+            </button>
+
+            <button onclick="paintMap('cover')">
+                Cover
+            </button>
+
+            <button onclick="paintMap('hazard')">
+                Hazard
+            </button>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function initiativeList() {
+
+    const combatants =
+        state.combat.combatants;
+
+    if (!combatants.length) {
+
+        return `
+            <div class="empty">
+                Add combatants to begin.
+            </div>
+        `;
+
+    }
+
+    return combatants.map(
+        (combatant,index) => `
+
+        <div
+            class="row"
+            style="${
+                index===state.combat.active
+                ? "background:#172536;border-radius:8px;padding-left:8px;padding-right:8px"
+                : ""
+            }"
+        >
+
+            <div class="row-main">
+
+                <div class="row-title">
+
+                    ${
+                        combatant.enemy
+                        ? "⚔ "
+                        : "♙ "
+                    }
+
+                    ${escapeHTML(combatant.name)}
+
+                </div>
+
+                <div class="row-sub">
+
+                    Initiative:
+                    ${combatant.initiative ?? "—"}
+
+                    ${
+                        combatant.hp != null
+                        ?
+                        ` • HP ${combatant.hp}`
+                        :
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <button
+                    class="small"
+                    onclick="activateCombatant(${index})"
+                >
+                    Activate
+                </button>
+
+                <button
+                    class="small danger"
+                    onclick="removeCombatant(${index})"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+        `
+    ).join("");
+
+}
+
+
+function addCombatant() {
+
+    openModal(
+
+        "Add Combatant",
+
+        `
+
+        <div class="form-grid">
+
+            <label>
+                Name
+
+                <input
+                    id="combatName"
+                    placeholder="Enemy or hero"
+                >
+
+            </label>
+
+            <label>
+                Initiative
+
+                <input
+                    id="combatInit"
+                    type="number"
+                    value="10"
+                >
+
+            </label>
+
+            <label>
+                HP
+
+                <input
+                    id="combatHP"
+                    type="number"
+                    value="10"
+                >
+
+            </label>
+
+            <label>
+
+                Type
+
+                <select id="combatType">
+
+                    <option value="false">
+                        Hero
+                    </option>
+
+                    <option value="true">
+                        Enemy
+                    </option>
+
+                </select>
+
+            </label>
+
+            <button
+                class="primary"
+                onclick="confirmAddCombatant()"
+            >
+                Add
+            </button>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+function confirmAddCombatant() {
+
+    const name =
+        document.getElementById("combatName").value
+        || "Combatant";
+
+    const initiative =
+        Number(
+            document.getElementById("combatInit").value
+        );
+
+    const hp =
+        Number(
+            document.getElementById("combatHP").value
+        );
+
+    const enemy =
+        document.getElementById("combatType").value
+        === "true";
+
+    state.combat.combatants.push({
+
+        name,
+        initiative,
+        hp,
+        maxHP: hp,
+        enemy,
+        defeated: false
+
+    });
+
+    state.combat.combatants.sort(
+        (a,b) =>
+            (b.initiative || 0)
+            -
+            (a.initiative || 0)
+    );
+
+    closeModal();
+
+    saveGame();
+
+    render();
+
+}
+
+
+function removeCombatant(index) {
+
+    state.combat.combatants
+        .splice(index,1);
+
+    if (
+        state.combat.active >=
+        state.combat.combatants.length
+    ) {
+
+        state.combat.active = 0;
+
+    }
+
+    saveGame();
+
+    render();
+
+}
+
+
+function activateCombatant(index) {
+
+    state.combat.active =
+        index;
+
+    const combatant =
+        state.combat.combatants[index];
+
+    state.combat.log.push(
+        `Round ${state.combat.round}: ${combatant.name}'s turn.`
+    );
+
+    saveGame();
+
+    render();
+
+}
+
+
+function nextRound() {
+
+    state.combat.round++;
+
+    state.combat.active = 0;
+
+    state.combat.log.push(
+        `Round ${state.combat.round} begins.`
+    );
+
+    saveGame();
+
+    render();
+
+}
+
+
+function rollInitiative() {
+
+    state.combat.combatants
+        .forEach(combatant => {
+
+            combatant.initiative =
+                d20();
+
+        });
+
+    state.combat.combatants.sort(
+        (a,b) =>
+            b.initiative -
+            a.initiative
+    );
+
+    state.combat.active = 0;
+
+    state.combat.log.push(
+        "Initiative rolled."
+    );
+
+    saveGame();
+
+    render();
+
+}
+
+
+/* ---------------------------------------------------------
+   BATTLE MAP
+   --------------------------------------------------------- */
+
+let selectedTileMode = "floor";
+
+
+function battleMapHTML() {
+
+    let html = "";
+
+    for (let i=0;i<84;i++) {
+
+        const tile =
+            state.combat.map[i] ||
+            "floor";
+
+        html += `
+
+            <div
+                class="tile ${tile}"
+                onclick="setTile(${i})"
+            >
+
+                ${
+                    i === 0 &&
+                    state.combat.combatants.length
+                    ?
+                    `<div class="token">
+                        H
+                    </div>`
+                    :
+                    ""
+                }
+
+            </div>
+
+        `;
+
+    }
+
+    return html;
+
+}
+
+
+function paintMap(mode) {
+
+    selectedTileMode =
+        mode;
+
+    toast(
+        `Map mode: ${mode}`
+    );
+
+}
+
+
+function setTile(index) {
+
+    state.combat.map[index] =
+        selectedTileMode;
+
+    saveGame();
+
+    render();
+
+}
+
+
+/* =========================================================
+   CAMPAIGN
+   ========================================================= */
+
+function renderCampaign() {
+
+    const campaign =
+        state.campaign;
+
+    return `
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Campaign
+            </h2>
+
+            <button
+                class="primary"
+                onclick="addCampaignItem('quests')"
+            >
+                New Quest
+            </button>
+
+        </div>
+
+        <label>
+            Campaign Name
+
+            <input
+                value="${escapeAttribute(campaign.name)}"
+                onchange="state.campaign.name=this.value;saveGame()"
+            >
+
+        </label>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-4">
+
+        ${campaignKPI("Locations",campaign.locations.length)}
+        ${campaignKPI("Factions",campaign.factions.length)}
+        ${campaignKPI("NPCs",campaign.npcs.length)}
+        ${campaignKPI("Quests",campaign.quests.length)}
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="grid grid-2">
+
+        ${campaignList("locations","Locations")}
+        ${campaignList("factions","Factions")}
+        ${campaignList("npcs","NPCs")}
+        ${campaignList("quests","Quests")}
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="card">
+
+        <h2>
+            GM Notes
+        </h2>
+
+        <textarea
+            onchange="state.campaign.notes=this.value;saveGame()"
+        >${escapeHTML(campaign.notes)}</textarea>
+
+    </div>
+
+    `;
+
+}
+
+
+function campaignKPI(name,value) {
+
+    return `
+
+    <div class="card stat-card">
+
+        <div class="stat-label">
+            ${name}
+        </div>
+
+        <div class="stat-value">
+            ${value}
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function campaignList(key,title) {
+
+    const items =
+        state.campaign[key];
+
+    return `
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                ${title}
+            </h2>
+
+            <button
+                class="small"
+                onclick="addCampaignItem('${key}')"
+            >
+                +
+            </button>
+
+        </div>
+
+        ${
+            items.length
+            ?
+            items.map(
+                (item,index) => `
+
+                <div class="row">
+
+                    <div class="row-main">
+
+                        <div class="row-title">
+                            ${escapeHTML(item.name)}
+                        </div>
+
+                        <div class="row-sub">
+                            ${escapeHTML(item.description || "")}
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="small danger"
+                        onclick="removeCampaignItem('${key}',${index})"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                `
+            ).join("")
+            :
+            `<div class="empty">
+                Nothing recorded yet.
+            </div>`
+        }
+
+    </div>
+
+    `;
+
+}
+
+
+function addCampaignItem(key) {
+
+    const title =
+        key.charAt(0).toUpperCase()
+        + key.slice(1,-1);
+
+    openModal(
+
+        `New ${title}`,
+
+        `
+
+        <div class="form-grid">
+
+            <label>
+                Name
+
+                <input
+                    id="campaignItemName"
+                    placeholder="${title}"
+                >
+
+            </label>
+
+            <label>
+                Description
+
+                <textarea
+                    id="campaignItemDescription"
+                ></textarea>
+
+            </label>
+
+            <button
+                class="primary"
+                onclick="confirmCampaignItem('${key}')"
+            >
+                Create
+            </button>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+function confirmCampaignItem(key) {
+
+    const name =
+        document.getElementById(
+            "campaignItemName"
+        ).value
+        || "Unnamed";
+
+    const description =
+        document.getElementById(
+            "campaignItemDescription"
+        ).value;
+
+    state.campaign[key].push({
+
+        name,
+        description
+
+    });
+
+    closeModal();
+
+    saveGame();
+
+    render();
+
+}
+
+
+function removeCampaignItem(key,index) {
+
+    state.campaign[key]
+        .splice(index,1);
+
+    saveGame();
+
+    render();
+
+}
+
+
+/* =========================================================
+   GM CONSOLE
+   ========================================================= */
+
+function renderGM() {
+
+    return `
+
+    <div class="grid grid-3">
+
+        <div class="card">
+
+            <h2>
+                Encounter Forge
+            </h2>
+
+            <p class="muted">
+                Build an encounter around an objective,
+                environment and escalating pressure.
+            </p>
+
+            <button
+                class="primary"
+                onclick="generateEncounter()"
+            >
+                Generate Encounter
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Enemy Forge
+            </h2>
+
+            <p class="muted">
+                Quickly create a combat-ready adversary.
+            </p>
+
+            <button
+                onclick="generateEnemy()"
+            >
+                Forge Enemy
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Loot Forge
+            </h2>
+
+            <p class="muted">
+                Generate tactical elemental rewards.
+            </p>
+
+            <button
+                onclick="generateLoot()"
+            >
+                Generate Loot
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div style="height:14px"></div>
+
+
+    <div class="card">
+
+        <h2>
+            Encounter Principles
+        </h2>
+
+        <div class="grid grid-2">
+
+            <div>
+
+                <div class="row">
+                    <span>Objective</span>
+                    <strong>What must change?</strong>
+                </div>
+
+                <div class="row">
+                    <span>Terrain</span>
+                    <strong>What can players exploit?</strong>
+                </div>
+
+                <div class="row">
+                    <span>Pressure</span>
+                    <strong>What gets worse?</strong>
+                </div>
+
+            </div>
+
+            <div>
+
+                <div class="row">
+                    <span>Element</span>
+                    <strong>What reacts?</strong>
+                </div>
+
+                <div class="row">
+                    <span>Escalation</span>
+                    <strong>How does the battlefield evolve?</strong>
+                </div>
+
+                <div class="row">
+                    <span>Choice</span>
+                    <strong>Why can't players just attack?</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function generateEncounter() {
+
+    const objectives = [
+        "Defeat the guardian",
+        "Survive 5 rounds",
+        "Protect the objective",
+        "Escape the battlefield",
+        "Capture the resonance node",
+        "Retrieve the elemental relic",
+        "Escort an unstable Kymera",
+        "Hold three control points"
+    ];
+
+    const environments = [
+        "Collapsed laboratory",
+        "Storm-wracked canyon",
+        "Ancient temple",
+        "Industrial foundry",
+        "Flooded ruin",
+        "Crystal cavern",
+        "Abandoned city",
+        "Resonance wasteland"
+    ];
+
+    const pressures = [
+        "The terrain shifts each round.",
+        "Reinforcements arrive at half health.",
+        "The objective becomes increasingly unstable.",
+        "A hazard spreads one tile per round.",
+        "The strongest enemy gains a new ability.",
+        "Visibility decreases after every round."
+    ];
+
+    const objective =
+        randomItem(objectives);
+
+    const environment =
+        randomItem(environments);
+
+    const pressure =
+        randomItem(pressures);
+
+    openModal(
+
+        "Generated Encounter",
+
+        `
+
+        <div class="card">
+
+            <div class="pills">
+
+                <span class="pill accent">
+                    ${objective}
+                </span>
+
+                <span class="pill purple">
+                    ${environment}
+                </span>
+
+            </div>
+
+            <h3 style="margin-top:15px">
+                Pressure
+            </h3>
+
+            <p>
+                ${pressure}
+            </p>
+
+            <h3>
+                Elemental Complication
+            </h3>
+
+            <p>
+                At least one elemental interaction
+                should alter the battlefield before
+                the encounter ends.
+            </p>
+
+            <h3>
+                Escalation
+            </h3>
+
+            <p>
+                Change the map, introduce a new threat,
+                or transform the objective at the
+                midpoint of the battle.
+            </p>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+function generateEnemy() {
+
+    const roles = [
+        "Brute",
+        "Soldier",
+        "Striker",
+        "Controller",
+        "Skirmisher",
+        "Artillery",
+        "Support",
+        "Swarm",
+        "Elite",
+        "Boss"
+    ];
+
+    const names = [
+        "Resonant Stalker",
+        "Ironbound Marauder",
+        "Void Hound",
+        "Storm Warden",
+        "Ashen Devourer",
+        "Crystal Sentinel",
+        "Memory Eater",
+        "Gravemind Construct",
+        "Rift Predator",
+        "Elemental Husk"
+    ];
+
+    const role =
+        randomItem(roles);
+
+    const name =
+        randomItem(names);
+
+    const hp =
+        8 +
+        Math.floor(Math.random()*15);
+
+    openModal(
+
+        "Forged Adversary",
+
+        `
+
+        <div class="grid grid-2">
+
+            <div>
+
+                <div class="stat-label">
+                    Name
+                </div>
+
+                <div class="stat-value"
+                     style="font-size:22px">
+
+                    ${name}
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    Role
+                </div>
+
+                <div class="stat-value"
+                     style="font-size:22px">
+
+                    ${role}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card">
+
+            <div class="row">
+                <span>Vitality</span>
+                <strong>${hp}</strong>
+            </div>
+
+            <div class="row">
+                <span>Evasion</span>
+                <strong>${10 + Math.floor(Math.random()*4)}</strong>
+            </div>
+
+            <div class="row">
+                <span>Signature</span>
+                <strong>${enemySignature(role)}</strong>
+            </div>
+
+            <div class="row">
+                <span>Reaction</span>
+                <strong>${enemyReaction(role)}</strong>
+            </div>
+
+        </div>
+
+        <button
+            class="primary"
+            onclick="
+                addEnemyToCombat(
+                    '${escapeAttribute(name)}',
+                    ${hp}
+                )
+            "
+        >
+            Add To Combat
+        </button>
+
+        `
+
+    );
+
+}
+
+
+function enemySignature(role) {
+
+    const signatures = {
+
+        Brute:
+            "Crushing assault — deal +2 damage and push 1.",
+
+        Soldier:
+            "Coordinated strike — gains +1 when adjacent to an ally.",
+
+        Striker:
+            "Predatory rush — move 3 then attack.",
+
+        Controller:
+            "Resonance snare — Root a target.",
+
+        Skirmisher:
+            "Fade step — move 2 after attacking.",
+
+        Artillery:
+            "Long resonance blast — ranged area attack.",
+
+        Support:
+            "Stabilising pulse — restore 3 HP to an ally.",
+
+        Swarm:
+            "Converge — gains +1 attack for each adjacent ally.",
+
+        Elite:
+            "Overdrive — gains an additional action below half HP.",
+
+        Boss:
+            "Phase escalation — changes behaviour at 50% HP."
+
+    };
+
+    return signatures[role];
+
+}
+
+
+function enemyReaction(role) {
+
+    const reactions = {
+
+        Brute:
+            "When damaged, advance toward the attacker.",
+
+        Soldier:
+            "Guard an adjacent ally.",
+
+        Striker:
+            "Move 1 after being targeted.",
+
+        Controller:
+            "Create a temporary hazard.",
+
+        Skirmisher:
+            "Disengage 2 spaces.",
+
+        Artillery:
+            "Retarget the nearest exposed target.",
+
+        Support:
+            "Protect the lowest-health ally.",
+
+        Swarm:
+            "Reposition adjacent to another swarm unit.",
+
+        Elite:
+            "Counterattack once per round.",
+
+        Boss:
+            "Trigger escalation."
+
+    };
+
+    return reactions[role];
+
+}
+
+
+function addEnemyToCombat(name,hp) {
+
+    state.combat.combatants.push({
+
+        name,
+        hp,
+        maxHP: hp,
+        initiative: d20(),
+        enemy: true,
+        defeated: false
+
+    });
+
+    state.combat.combatants.sort(
+        (a,b) =>
+            b.initiative -
+            a.initiative
+    );
+
+    closeModal();
+
+    state.currentPage =
+        "combat";
+
+    saveGame();
+
+    render();
+
+}
+
+
+function generateLoot() {
+
+    const tiers = [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+    ];
+
+    const names = [
+        "Resonance Shard",
+        "Elemental Core",
+        "Phase Ring",
+        "Catalyst Harness",
+        "Memory Prism",
+        "Living Alloy",
+        "Storm Heart",
+        "Temporal Lens",
+        "Void Seed",
+        "KYMERA Relic"
+    ];
+
+    const tier =
+        randomItem(tiers);
+
+    const name =
+        randomItem(names);
+
+    openModal(
+
+        `${tier} Loot`,
+
+        `
+
+        <div class="card">
+
+            <h2>
+                ${name}
+            </h2>
+
+            <span class="pill gold">
+                ${tier}
+            </span>
+
+            <p style="margin-top:15px">
+                This item alters one elemental,
+                movement, defensive or synthesis
+                interaction rather than simply
+                granting a flat numerical bonus.
+            </p>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+/* =========================================================
+   RULES
+   ========================================================= */
+
+function renderRules() {
+
+    return `
+
+    <div class="tabs">
+
+        <button
+            class="active"
+            onclick="rulesTab('core')"
+        >
+            Core
+        </button>
+
+        <button
+            onclick="rulesTab('combat')"
+        >
+            Combat
+        </button>
+
+        <button
+            onclick="rulesTab('elements')"
+        >
+            Elements
+        </button>
+
+        <button
+            onclick="rulesTab('gm')"
+        >
+            GM
+        </button>
+
+    </div>
+
+    <div id="rulesContent">
+
+        ${rulesCore()}
+
+    </div>
+
+    `;
+
+}
+
+
+function rulesTab(tab) {
+
+    const target =
+        document.getElementById(
+            "rulesContent"
+        );
+
+    if (!target) return;
+
+    const pages = {
+
+        core: rulesCore,
+
+        combat: rulesCombat,
+
+        elements: rulesElements,
+
+        gm: rulesGM
+
+    };
+
+    target.innerHTML =
+        pages[tab]();
+
+}
+
+
+function rulesCore() {
+
+    return `
+
+    <div class="grid grid-2">
+
+        <div class="card">
+
+            <h2>
+                The Core Roll
+            </h2>
+
+            <p>
+                Roll a d20 + the relevant Stat +
+                one applicable Resonance trait.
+            </p>
+
+            <div class="row">
+                <span>Easy</span>
+                <strong>10</strong>
+            </div>
+
+            <div class="row">
+                <span>Standard</span>
+                <strong>13</strong>
+            </div>
+
+            <div class="row">
+                <span>Hard</span>
+                <strong>16</strong>
+            </div>
+
+            <div class="row">
+                <span>Extreme</span>
+                <strong>19</strong>
+            </div>
+
+            <div class="row">
+                <span>Legendary</span>
+                <strong>22</strong>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Nat 20 / Nat 1
+            </h2>
+
+            <p>
+                A natural 20 produces an extra effect.
+                A natural 1 introduces a complication,
+                resource loss or narrative consequence.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Hope
+            </h2>
+
+            <p>
+                Spend Hope to reroll, assist an ally,
+                or reduce an Overload result by 1.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Overload
+            </h2>
+
+            <p>
+                You may exceed safe Reservoir capacity,
+                but each extra unit generates 1 Overload.
+            </p>
+
+            <p>
+                At 5 Overload you Break. Reset to 2 and
+                accept a lasting GM consequence.
+            </p>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function rulesCombat() {
+
+    return `
+
+    <div class="card">
+
+        <h2>
+            Turn Structure
+        </h2>
+
+        <div class="row">
+            <span>Movement</span>
+            <strong>Move</strong>
+        </div>
+
+        <div class="row">
+            <span>Actions</span>
+            <strong>2 Actions</strong>
+        </div>
+
+        <div class="row">
+            <span>Reaction</span>
+            <strong>1 Reaction</strong>
+        </div>
+
+        <h3 style="margin-top:18px">
+            Common Actions
+        </h3>
+
+        <div class="pills">
+
+            <span class="pill">Attack</span>
+            <span class="pill">Power</span>
+            <span class="pill">Guard</span>
+            <span class="pill">Dash</span>
+            <span class="pill">Interact</span>
+            <span class="pill">Prepare</span>
+            <span class="pill">Synthesize</span>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function rulesElements() {
+
+    return `
+
+    <div class="card">
+
+        <h2>
+            Body • Mind • Soul
+        </h2>
+
+        <p>
+            Each character possesses three elemental
+            expressions. Their chosen elements influence
+            the powers they can create.
+        </p>
+
+        <div class="grid grid-3">
+
+            <div class="card">
+                <h3>Body</h3>
+                <p class="muted">
+                    Physical structure, movement and force.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Mind</h3>
+                <p class="muted">
+                    Perception, thought and information.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Soul</h3>
+                <p class="muted">
+                    Identity, life, death and deeper resonance.
+                </p>
+            </div>
+
+        </div>
+
+        <h3>
+            Synthesis
+        </h3>
+
+        <p>
+            Combine elemental properties to create
+            emergent effects.
+        </p>
+
+        <div class="pills">
+
+            <span class="pill accent">
+                Metal + Electricity → Electromagnetism
+            </span>
+
+            <span class="pill accent">
+                Oxygen + Combustible → Combustion
+            </span>
+
+            <span class="pill accent">
+                Gas + Area → Diffusion
+            </span>
+
+            <span class="pill accent">
+                Life + Organic → Growth
+            </span>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function rulesGM() {
+
+    return `
+
+    <div class="grid grid-2">
+
+        <div class="card">
+
+            <h2>
+                Encounter Recipe
+            </h2>
+
+            <ol>
+
+                <li>Objective</li>
+                <li>Terrain</li>
+                <li>Pressure</li>
+                <li>Elemental complication</li>
+                <li>Battlefield change</li>
+
+            </ol>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Enemy Recipe
+            </h2>
+
+            <ol>
+
+                <li>Role</li>
+                <li>Vitality</li>
+                <li>Three defences</li>
+                <li>Tags</li>
+                <li>Signature</li>
+                <li>Reaction</li>
+                <li>Escalation</li>
+
+            </ol>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   UTILITY FUNCTIONS
+   ========================================================= */
+
+function randomItem(array) {
+
+    return array[
+        Math.floor(
+            Math.random()*array.length
+        )
+    ];
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeAttribute(value) {
+
+    return escapeHTML(value);
+
+}
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+loadGame();
+
+render();
+
+
+/* Autosave */
+
+setInterval(
+    saveGame,
+    15000
+);
+
+
+/* Close modal when clicking backdrop */
+
+document
+    .getElementById("modal")
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id === "modal"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+</body>
+</html>
